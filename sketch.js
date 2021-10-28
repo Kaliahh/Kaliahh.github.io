@@ -39,9 +39,9 @@ async function swap(arr, a, b) {
 
 
 async function BubbleSort(A, n) {
-  for (let i = 0; i < n - 1; i += 2) {
+  for (let i = 0; i < n ; i += 2) {
     
-    for (let j = 0; j < n - i - 1; j++) {
+    for (let j = 0; j < n; j++) {
       
       if (A[j] > A[j + 1]) {
         await swap(A, j, j + 1);
