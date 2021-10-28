@@ -1,19 +1,19 @@
 function setup() {
   createCanvas(windowWidth, windowHeight);
   
-
   values = [];
   
   size = 20;
   
-  p = 0;
+  p = floor(width / size);
 
-  for (let i = 0; i < floor(width / size); i++) {
-    values[i] = random(height);
+  for (let i = 0; i < p; i++) {
+    values[i] = map(i, 0, p - 1, p / 3, height);
+    
+    // values[i] = random(height);
   }
   
   BubbleSort(values, values.length);
-  
 }
 
 
