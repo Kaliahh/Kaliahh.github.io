@@ -6,25 +6,34 @@ async function setup() {
 
   values = [];
   size = 20;
+  pause = 500
   p = floor(width / size);
 
   for (let i = 0; i < p; i++) {
     values.push(new Rectangle(map(i, 0, p - 1, p / 3, height)));
   }
 
+  let algorithms = [
+    () => MergeSort(values, 0, values.lenght - 1),
+    () => QuickSort(values, 0, values.length - 1),
+    () => BubbleSort(values, values.length),
+    () => HeapSort(values, values.length)
+  ];
+
   while (true) {
-    await shuffleArray(values);
-    await MergeSort(values, 0, values.length - 1);
-    await sleep(500)
-    await shuffleArray(values);
-    await QuickSort(values, 0, values.length - 1);
-    await sleep(500)
-    await shuffleArray(values);
-    await HeapSort(values, values.length);
-    await sleep(500)
-    await shuffleArray(values);
-    await BubbleSort(values, values.length);
-    await sleep(500)
+    await shuffleArray(algorithms)
+
+    for (let i = 0; i < algorithms.length; i++) {
+      await shuffleArray(values);
+      await algorithms[i]();
+      await sleep(pause);
+    }
+  }
+}
+
+function executeFunctions(funcs) {
+  for (var i = 0, len = funcs.length; i < len; i++) {
+      funcs[i]();
   }
 }
 
