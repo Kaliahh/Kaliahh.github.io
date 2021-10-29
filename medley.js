@@ -31,12 +31,6 @@ async function setup() {
   }
 }
 
-function executeFunctions(funcs) {
-  for (var i = 0, len = funcs.length; i < len; i++) {
-      funcs[i]();
-  }
-}
-
 function draw() {
   background(51);
 
