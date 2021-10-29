@@ -14,7 +14,7 @@ async function setup() {
   }
 
   let algorithms = [
-    () => MergeSort(values, 0, values.lenght - 1),
+    () => MergeSort(values, 0, values.length - 1),
     () => QuickSort(values, 0, values.length - 1),
     () => BubbleSort(values, values.length),
     () => HeapSort(values, values.length)
