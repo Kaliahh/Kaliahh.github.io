@@ -1,10 +1,8 @@
 async function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  // unmarked = color(255, 255, 255)
-  // marked = color(255, 0, 0)
-
   bubble = false;
+  quick = false;
   values = [];
   size = 20;
   pause = 500
@@ -21,7 +19,9 @@ async function setup() {
     },
     async () => {
       console.log("Quick");
+      quick = true;
       await QuickSort(values, 0, values.length - 1);
+      quick = false;
     },
     async () => {
       console.log("Bubble");
@@ -40,7 +40,13 @@ async function setup() {
 
     for (let i = 0; i < algorithms.length; i++) {
       await shuffleArray(values);
+
+      let start = millis();
       await algorithms[i]();
+      let end = millis();
+
+      console.log(end - start)
+
       await sleep(pause);
     }
 
