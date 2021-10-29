@@ -67,6 +67,8 @@ async function setup() {
 function draw() {
   background(51);
 
+  osc.playMode('restart')
+
   if (!isShuffling) {
     text(Math.floor((millis() - start) / 1000), 20, width / 30)
   }
