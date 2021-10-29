@@ -1,9 +1,10 @@
 async function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  unmarked = color(255, 255, 255)
-  marked = color(255, 0, 0)
+  // unmarked = color(255, 255, 255)
+  // marked = color(255, 0, 0)
 
+  bubble = false;
   values = [];
   size = 20;
   pause = 500
@@ -14,10 +15,24 @@ async function setup() {
   }
 
   let algorithms = [
-    () => MergeSort(values, 0, values.length - 1),
-    () => QuickSort(values, 0, values.length - 1),
-    () => BubbleSort(values, values.length),
-    () => HeapSort(values, values.length)
+    async () => {
+      console.log("Merge");
+      await MergeSort(values, 0, values.length - 1);
+    },
+    async () => {
+      console.log("Quick");
+      await QuickSort(values, 0, values.length - 1);
+    },
+    async () => {
+      console.log("Bubble");
+      bubble = true;
+      await BubbleSort(values, values.length);
+      bubble = false;
+    },
+    async () => {
+      console.log("Heap");
+      await HeapSort(values, values.length)
+    }
   ];
 
   while (true) {
@@ -28,6 +43,8 @@ async function setup() {
       await algorithms[i]();
       await sleep(pause);
     }
+
+    console.log("##################")
   }
 }
 

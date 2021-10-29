@@ -1,8 +1,14 @@
 async function swap(arr, a, b) {
   // arr[a].color = marked
-  await sleep(20);
-  // arr[a].color = unmarked
+  if (bubble) {
+    await sleep(10);
+  }
+  else {
+    await sleep(20);
+  }
 
+  // arr[a].color = unmarked
+  
   let temp = arr[a];
   arr[a] = arr[b]
   arr[b] = temp;
