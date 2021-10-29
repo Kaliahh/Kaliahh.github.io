@@ -8,12 +8,20 @@ function setup() {
   p = floor(width / size);
 
   for (let i = 0; i < p; i++) {
-    values[i] = map(i, 0, p - 1, p / 3, height);
+    // values[i] = map(i, 0, p - 1, p / 3, height);
+    values.push(new Noget(map(i, 0, p - 1, p / 3, height)));
     
     // values[i] = random(height);
   }
   
   BubbleSort(values, values.length);
+}
+
+class Noget {
+  constructor(value) {
+    this.value = value;
+    this.color = color(255, 255, 255);
+  }
 }
 
 
@@ -24,7 +32,8 @@ function draw() {
 
   for (let i = 0; i < values.length; i++) {
     stroke(0);
-    rect(i * size, height - values[i], size - 1, values[i]);
+    fill(values[i].color);
+    rect(i * size, height - values[i].value, size - 1, values[i].value);
   }
 
 }
@@ -39,18 +48,23 @@ async function swap(arr, a, b) {
 
 
 async function BubbleSort(A, n) {
+  
   for (let i = 0; i < n ; i += 2) {
     
-    for (let j = 0; j < n; j++) {
+    for (let j = 0; j < n - 1; j++) {
       
-      if (A[j] > A[j + 1]) {
+      if (A[j].value > A[j + 1].value) {
+        A[j].color = color(255, 0, 0)
         await swap(A, j, j + 1);
+        A[j + 1].color = color(255, 255, 255)
       }
     }
     
     for (let j = n - 1; j > 0; j--) {
-      if (A[j] < A[j - 1]) {
+      if (A[j].value < A[j - 1].value) {
+        A[j].color = color(255, 0, 0)
         await swap(A, j, j - 1);
+        A[j - 1].color = color(255, 255, 255)
       }
     }
   }
