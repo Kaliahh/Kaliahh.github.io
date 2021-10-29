@@ -1,4 +1,7 @@
 async function swap(arr, a, b) {
+
+  setFreq(b);
+
   if (bubble) {
     await sleep(10);
   }
@@ -29,4 +32,9 @@ function getRandomInt(min, max) {
 
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function setFreq(n) {
+  let freq = map(values[n].value, p / 3, height, 100, 500);
+  osc.freq(freq, 0.1)
 }

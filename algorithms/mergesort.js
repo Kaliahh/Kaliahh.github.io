@@ -47,20 +47,20 @@ async function Merge(A, l, m, r, temp) {
       j++;
     }
 
-    k++;
+    setFreq(k++)
   }
 
   while (i < n1) {
     await sleep(40);
     A[k] = L[i];
     i++;
-    k++;
+    setFreq(k++)
   }
 
   while (j < n2) {
     await sleep(40);
     A[k] = R[j];
     j++;
-    k++;
+    setFreq(k++)
   }
 }

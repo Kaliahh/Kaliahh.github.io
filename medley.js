@@ -12,6 +12,10 @@ async function setup() {
   pause = 500
   p = floor(width / size);
 
+  osc = new p5.Oscillator('sine');
+  osc.start()
+  osc.amp(0.1)
+
   for (let i = 0; i < p; i++) {
     values.push(new Rectangle(map(i, 0, p - 1, p / 3, height)));
   }
