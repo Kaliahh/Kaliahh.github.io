@@ -1,5 +1,9 @@
 async function setup() {
   createCanvas(windowWidth, windowHeight);
+  start = millis();
+  isShuffling = false;
+
+  textSize(width / 30)
 
   bubble = false;
   quick = false;
@@ -39,13 +43,15 @@ async function setup() {
     await shuffleArray(algorithms)
 
     for (let i = 0; i < algorithms.length; i++) {
+      isShuffling = true
       await shuffleArray(values);
+      isShuffling = false;
 
-      let start = millis();
+      start = millis();
       await algorithms[i]();
-      let end = millis();
+      end = millis();
 
-      console.log(end - start)
+      console.log(Math.floor(end - start))
 
       await sleep(pause);
     }
@@ -56,6 +62,10 @@ async function setup() {
 
 function draw() {
   background(51);
+
+  if (!isShuffling) {
+    text(Math.floor((millis() - start) / 1000), 20, width / 30)
+  }
 
   for (let i = 0; i < values.length; i++) {
     stroke(0);
