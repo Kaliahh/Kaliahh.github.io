@@ -1,6 +1,7 @@
 async function swap(arr, a, b) {
 
-  setFreq(b);
+  setFreq(osc1, b);
+  setFreq(osc2, a);
 
   if (bubble) {
     await sleep(10);
@@ -34,7 +35,7 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-function setFreq(n) {
+function setFreq(osc, n) {
   let freq = map(values[n].value, p / 3, height, 100, 500);
   osc.freq(freq, 0.1)
 }
