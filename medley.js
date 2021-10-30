@@ -68,6 +68,10 @@ async function setup() {
     async () => {
       runningAlgortihm = "OddEven";
       await OddEvenSort(values);
+    },
+    async () = {
+      runningAlgortihm = "Gnome";
+      await GnomeSort(values);
     }
   ];
 
