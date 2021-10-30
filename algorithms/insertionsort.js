@@ -13,13 +13,13 @@
 
 
 async function InsertionSort(A) {
-  for (let i < A.length()) {
+  for (let i = 1; i < A.length(); i++) {
     let j = i;
 
     while (j > 0 && A[j - 1] > A[j]) {
       await swap(A[j], A[j - 1]);
       j--;
     }
-    i--;
+    i++;
   }
 }
