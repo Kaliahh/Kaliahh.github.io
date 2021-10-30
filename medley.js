@@ -30,7 +30,7 @@ async function setup() {
 
   modifiers = {
     "Fast Bubble": 0.5,
-    "Gnome": 1,
+    "Gnome": 0.25,
     "Heap": 1,
     "Insertion": 0.25,
     "Merge": 15,
@@ -112,7 +112,7 @@ function draw() {
   background(51);
 
   if (!isShuffling) {
-    text(runningAlgortihm + "(x" + modifiers[runningAlgortihm] + "): " + Math.floor((millis() - start) / 1000), 20, width / 40)
+    text(runningAlgortihm + " (x" + modifiers[runningAlgortihm] + "): " + Math.floor((millis() - start) / 1000), 20, width / 40)
   }
 
   for (let i = 0; i < values.length; i++) {
