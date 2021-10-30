@@ -47,6 +47,7 @@ async function Merge(A, l, m, r, temp) {
       setFreq(osc2, j++);
     }
 
+    k++;
     // setFreq(k++)
   }
 
@@ -54,6 +55,8 @@ async function Merge(A, l, m, r, temp) {
     await sleep(40);
     A[k] = L[i];
     setFreq(osc1, i++);
+
+    k++;
     // setFreq(k++)
   }
 
@@ -61,6 +64,8 @@ async function Merge(A, l, m, r, temp) {
     await sleep(40);
     A[k] = R[j];
     setFreq(osc2, j++);
+
+    k++;
     // setFreq(k++)
   }
 }
