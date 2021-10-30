@@ -10,7 +10,7 @@ async function SelectionSort(A) {
     }
 
     if (jMin != i) {
-      await swap(A, i, jMin);
+      await swap(A, jMin, i);
     }
   }
 }
