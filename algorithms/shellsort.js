@@ -6,7 +6,7 @@ async function ShellSort(A) {
   for (k = 0; k < gaps.length; k++) {
 
     for (i = gaps[k]; i < A.length; i++) {
-      await sleep(20);
+      await sleep20();
 
       setFreq(osc1, i);
 
@@ -14,7 +14,7 @@ async function ShellSort(A) {
       let j;
 
       for (j = i; j >= gaps[k] && A[j - gaps[k]].value > temp.value; j -= gaps[k]) {
-        await sleep(20);
+        await sleep20();
         A[j] = A[j - gaps[k]];
         setFreq(osc2, j);
       }

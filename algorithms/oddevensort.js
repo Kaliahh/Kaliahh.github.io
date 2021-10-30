@@ -23,7 +23,7 @@ async function EvenOddHelper(A, k, direction) {
 
   // direction: true is forwards, false is backwards
   for (let i = k; direction ? i <= A.length - 2 : i >= 1; direction ? i += 2 : i -= 2) {
-    await sleep(10);
+    await sleep20();
 
     if (direction ? A[i].value > A[i + 1].value : A[i].value < A[i - 1].value) {
       setFreq(direction ? osc2 : osc1, i);

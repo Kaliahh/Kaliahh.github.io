@@ -15,7 +15,7 @@ async function MergeSort(A, l, r) {
 }
 
 async function Merge(A, l, m, r, temp) {
-  await sleep(300);
+  await sleep20();
 
   let n1 = m - l + 1;
   let n2 = r - m;
@@ -36,7 +36,7 @@ async function Merge(A, l, m, r, temp) {
   let k = l;
 
   while (i < n1 && j < n2) {
-    await sleep(40);
+    await sleep2();
 
     if (L[i].value <= R[j].value) {
       A[k] = L[i];
@@ -48,24 +48,21 @@ async function Merge(A, l, m, r, temp) {
     }
 
     k++;
-    // setFreq(k++)
   }
 
   while (i < n1) {
-    await sleep(40);
+    await sleep2();
     A[k] = L[i];
     setFreq(osc1, i++);
 
     k++;
-    // setFreq(k++)
   }
 
   while (j < n2) {
-    await sleep(40);
+    await sleep2();
     A[k] = R[j];
     setFreq(osc2, j++);
 
     k++;
-    // setFreq(k++)
   }
 }

@@ -3,21 +3,23 @@ async function swap(arr, a, b) {
   setFreq(osc1, b);
   setFreq(osc2, a);
 
-  if (bubble) {
-    await sleep(10);
-  }
-  else if (quick) {
-    await sleep(60);
-  }
-  else if (insertion) {
-    await sleep(5);
-  }
-  else if (selection) {
-    await sleep(60);
-  }
-  else {
-    await sleep(20);
-  }
+  // if (bubble) {
+  //   await sleep(10);
+  // }
+  // else if (quick) {
+  //   await sleep(60);
+  // }
+  // else if (insertion) {
+  //   await sleep(5);
+  // }
+  // else if (selection) {
+  //   await sleep(60);
+  // }
+  // else {
+  //   await sleep(20);
+  // }
+
+  await sleep20()
 
   let temp = arr[a];
   arr[a] = arr[b]
@@ -38,8 +40,12 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+function sleep20() {
+  return new Promise(resolve => setTimeout(resolve, 20 * modifiers[runningAlgortihm]));
+}
+
+function sleep2() {
+  return new Promise(resolve => setTimeout(resolve, 2 * modifiers[runningAlgortihm]));
 }
 
 function setFreq(osc, n) {

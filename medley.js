@@ -28,6 +28,18 @@ async function setup() {
     values.push(new Rectangle(map(i, 0, p - 1, p / 3, height)));
   }
 
+  modifiers = {
+    "Fast Bubble": 0.5,
+    "Gnome": 1,
+    "Heap": 1,
+    "Insertion": 0.25,
+    "Merge": 15,
+    "OddEven": 0.5,
+    "Quick": 3,
+    "Selection": 3,
+    "Shell": 1
+  };
+
   let algorithms = [
     async () => {
       runningAlgortihm = "Merge";
@@ -100,7 +112,7 @@ function draw() {
   background(51);
 
   if (!isShuffling) {
-    text(runningAlgortihm + ": " + Math.floor((millis() - start) / 1000), 20, width / 40)
+    text(runningAlgortihm + "(x" + modifiers[runningAlgortihm] + "): " + Math.floor((millis() - start) / 1000), 20, width / 40)
   }
 
   for (let i = 0; i < values.length; i++) {
