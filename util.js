@@ -3,23 +3,13 @@ async function swap(arr, a, b) {
   setFreq(osc1, b);
   setFreq(osc2, a);
 
-  // if (bubble) {
-  //   await sleep(10);
-  // }
-  // else if (quick) {
-  //   await sleep(60);
-  // }
-  // else if (insertion) {
-  //   await sleep(5);
-  // }
-  // else if (selection) {
-  //   await sleep(60);
-  // }
-  // else {
-  //   await sleep(20);
-  // }
+  if (!isShuffling) {
+    await sleep20();
+  }
+  else {
+    await sleep(20);
+  }
 
-  await sleep20()
 
   let temp = arr[a];
   arr[a] = arr[b]
