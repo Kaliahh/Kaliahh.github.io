@@ -16,7 +16,7 @@ async function setup() {
   osc1.start()
   osc1.amp(0.1)
 
-  osc2 = new p5.Oscillator('sine');
+  osc2 = new p5.Oscillator('triangle');
   osc2.start()
   osc2.amp(0.1)
 
@@ -25,25 +25,29 @@ async function setup() {
   }
 
   let algorithms = [
+    // async () => {
+    //   console.log("Merge");
+    //   await MergeSort(values, 0, values.length - 1);
+    // },
+    // async () => {
+    //   console.log("Quick");
+    //   quick = true;
+    //   await QuickSort(values, 0, values.length - 1);
+    //   quick = false;
+    // },
+    // async () => {
+    //   console.log("Bubble");
+    //   bubble = true;
+    //   await BubbleSort(values, values.length);
+    //   bubble = false;
+    // },
+    // async () => {
+    //   console.log("Heap");
+    //   await HeapSort(values, values.length)
+    // },
     async () => {
-      console.log("Merge");
-      await MergeSort(values, 0, values.length - 1);
-    },
-    async () => {
-      console.log("Quick");
-      quick = true;
-      await QuickSort(values, 0, values.length - 1);
-      quick = false;
-    },
-    async () => {
-      console.log("Bubble");
-      bubble = true;
-      await BubbleSort(values, values.length);
-      bubble = false;
-    },
-    async () => {
-      console.log("Heap");
-      await HeapSort(values, values.length)
+      console.log("Insertion");
+      await InsertionSort(values);
     }
   ];
 

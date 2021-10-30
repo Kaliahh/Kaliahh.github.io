@@ -25,10 +25,11 @@ async function shuffleArray(array) {
     }
 }
 
+//The maximum is exclusive and the minimum is inclusive
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+  return Math.floor(Math.random() * (max - min) + min);
 }
 
 function sleep(ms) {
@@ -37,5 +38,5 @@ function sleep(ms) {
 
 function setFreq(osc, n) {
   let freq = map(values[n].value, p / 3, height, 100, 500);
-  osc.freq(freq, 0.1)
+  osc.freq(freq, 0.05)
 }
