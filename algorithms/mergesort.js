@@ -1,5 +1,5 @@
 async function MergeSort(A, l, r) {
-  await sleep2();
+  await sleep(10);
 
   if (l < r) {
     let m = floor((l+r) / 2);

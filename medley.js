@@ -13,7 +13,7 @@ async function setup() {
   selection = false;
   values = [];
   size = 20;
-  pause = 500
+  pause = 500;
   p = floor(width / size);
 
   osc1 = new p5.Oscillator('sine');

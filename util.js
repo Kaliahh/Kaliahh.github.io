@@ -48,6 +48,10 @@ function sleep2() {
   return new Promise(resolve => setTimeout(resolve, 2 * modifiers[runningAlgortihm]));
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 function setFreq(osc, n) {
   let freq = map(values[n].value, p / 3, height, 100, 500);
   osc.freq(freq, 0.05)
