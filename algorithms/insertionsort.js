@@ -13,7 +13,7 @@
 
 
 async function InsertionSort(A) {
-  for (let i < A.length) {
+  for (let i < A.length()) {
     let j = i;
 
     while (j > 0 && A[j - 1] > A[j]) {
