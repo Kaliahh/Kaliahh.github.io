@@ -40,7 +40,7 @@ async function setup() {
       quick = false;
     },
     async () => {
-      runningAlgortihm = "Bubble";
+      runningAlgortihm = "Fast Bubble";
       bubble = true;
       await BubbleSort(values, values.length);
       bubble = false;
@@ -64,6 +64,10 @@ async function setup() {
     async () => {
       runningAlgortihm = "Shell";
       await ShellSort(values);
+    },
+    async () => {
+      runningAlgortihm = "OddEven";
+      await OddEvenSort(values);
     }
   ];
 
@@ -75,13 +79,11 @@ async function setup() {
       await shuffleArray(values);
       isShuffling = false;
 
-      console.log(runningAlgortihm);
-
       start = millis();
       await algorithms[i]();
       end = millis();
 
-      console.log(Math.floor(end - start))
+      console.log(runningAlgortihm + ": " + Math.floor(end - start))
 
       await sleep(pause);
     }
