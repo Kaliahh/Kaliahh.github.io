@@ -16,7 +16,7 @@ async function setup() {
   osc1.start()
   osc1.amp(0.1)
 
-  osc2 = new p5.Oscillator('cos');
+  osc2 = new p5.Oscillator('sine');
   osc2.start()
   osc2.amp(0.1)
 
