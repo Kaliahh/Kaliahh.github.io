@@ -1,7 +1,7 @@
-async function HeapSort(A, n) {
-  await Heapify(A, n);
+async function HeapSort(A) {
+  await Heapify(A, A.length);
 
-  let end = n - 1;
+  let end = A.length - 1;
 
   while (end > 0) {
     await swap(A, end, 0);

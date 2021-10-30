@@ -1,16 +1,13 @@
+// TODO: Make into key of C
+
 async function setup() {
   createCanvas(windowWidth, windowHeight);
   start = millis();
-  isShuffling = false;
+  isShuffling = true;
 
   textSize(width / 40)
 
   runningAlgortihm = "";
-
-  bubble = false;
-  quick = false;
-  insertion = false;
-  selection = false;
   values = [];
   size = 20;
   pause = 500;
@@ -47,31 +44,23 @@ async function setup() {
     },
     async () => {
       runningAlgortihm = "Quick";
-      quick = true;
       await QuickSort(values, 0, values.length - 1);
-      quick = false;
     },
     async () => {
       runningAlgortihm = "Fast Bubble";
-      bubble = true;
-      await BubbleSort(values, values.length);
-      bubble = false;
+      await BubbleSort(values);
     },
     async () => {
       runningAlgortihm = "Heap";
-      await HeapSort(values, values.length)
+      await HeapSort(values)
     },
     async () => {
       runningAlgortihm = "Insertion";
-      insertion = true;
       await InsertionSort(values);
-      insertion = false;
     },
     async () => {
       runningAlgortihm = "Selection";
-      selection = true;
       await SelectionSort(values);
-      selection = false;
     },
     async () => {
       runningAlgortihm = "Shell";
