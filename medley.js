@@ -3,7 +3,9 @@ async function setup() {
   start = millis();
   isShuffling = false;
 
-  textSize(width / 30)
+  textSize(width / 40)
+
+  runningAlgortihm = "";
 
   bubble = false;
   quick = false;
@@ -27,37 +29,41 @@ async function setup() {
   }
 
   let algorithms = [
-    // async () => {
-    //   console.log("Merge");
-    //   await MergeSort(values, 0, values.length - 1);
-    // },
-    // async () => {
-    //   console.log("Quick");
-    //   quick = true;
-    //   await QuickSort(values, 0, values.length - 1);
-    //   quick = false;
-    // },
-    // async () => {
-    //   console.log("Bubble");
-    //   bubble = true;
-    //   await BubbleSort(values, values.length);
-    //   bubble = false;
-    // },
-    // async () => {
-    //   console.log("Heap");
-    //   await HeapSort(values, values.length)
-    // },
-    // async () => {
-    //   console.log("Insertion");
-    //   insertion = true;
-    //   await InsertionSort(values);
-    //   insertion = false;
-    // },
     async () => {
-      console.log("Selection");
+      runningAlgortihm = "Merge";
+      await MergeSort(values, 0, values.length - 1);
+    },
+    async () => {
+      runningAlgortihm = "Quick";
+      quick = true;
+      await QuickSort(values, 0, values.length - 1);
+      quick = false;
+    },
+    async () => {
+      runningAlgortihm = "Bubble";
+      bubble = true;
+      await BubbleSort(values, values.length);
+      bubble = false;
+    },
+    async () => {
+      runningAlgortihm = "Heap";
+      await HeapSort(values, values.length)
+    },
+    async () => {
+      runningAlgortihm = "Insertion";
+      insertion = true;
+      await InsertionSort(values);
+      insertion = false;
+    },
+    async () => {
+      runningAlgortihm = "Selection";
       selection = true;
       await SelectionSort(values);
       selection = false;
+    },
+    async () => {
+      runningAlgortihm = "Shell";
+      await ShellSort(values);
     }
   ];
 
@@ -68,6 +74,8 @@ async function setup() {
       isShuffling = true
       await shuffleArray(values);
       isShuffling = false;
+
+      console.log(runningAlgortihm);
 
       start = millis();
       await algorithms[i]();
@@ -86,7 +94,7 @@ function draw() {
   background(51);
 
   if (!isShuffling) {
-    text(Math.floor((millis() - start) / 1000), 20, width / 30)
+    text(runningAlgortihm + ": " + Math.floor((millis() - start) / 1000), 20, width / 40)
   }
 
   for (let i = 0; i < values.length; i++) {
