@@ -12,6 +12,9 @@ async function swap(arr, a, b) {
   else if (insertion) {
     await sleep(5);
   }
+  else if (selection) {
+    await sleep(60);
+  }
   else {
     await sleep(20);
   }

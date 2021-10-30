@@ -8,6 +8,7 @@ async function setup() {
   bubble = false;
   quick = false;
   insertion = false;
+  selection = false;
   values = [];
   size = 20;
   pause = 500
@@ -54,7 +55,9 @@ async function setup() {
     // },
     async () => {
       console.log("Selection");
+      selection = true;
       await SelectionSort(values);
+      selection = false;
     }
   ];
 
