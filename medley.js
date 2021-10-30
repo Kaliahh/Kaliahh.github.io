@@ -7,6 +7,7 @@ async function setup() {
 
   bubble = false;
   quick = false;
+  insertion = false;
   values = [];
   size = 20;
   pause = 500
@@ -47,7 +48,9 @@ async function setup() {
     // },
     async () => {
       console.log("Insertion");
+      insertion = true;
       await InsertionSort(values);
+      insertion = false;
     }
   ];
 

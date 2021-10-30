@@ -9,6 +9,9 @@ async function swap(arr, a, b) {
   else if (quick) {
     await sleep(60);
   }
+  else if (insertion) {
+    sleep(5);
+  }
   else {
     await sleep(20);
   }
