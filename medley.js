@@ -46,11 +46,15 @@ async function setup() {
     //   console.log("Heap");
     //   await HeapSort(values, values.length)
     // },
+    // async () => {
+    //   console.log("Insertion");
+    //   insertion = true;
+    //   await InsertionSort(values);
+    //   insertion = false;
+    // },
     async () => {
-      console.log("Insertion");
-      insertion = true;
-      await InsertionSort(values);
-      insertion = false;
+      console.log("Selection");
+      await SelectionSort(values);
     }
   ];
 
