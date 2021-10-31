@@ -23,7 +23,7 @@ async function CycleSort(A) {
 
     // array[pos], item = item, array[pos]
     // await swap(A, cycle_start, pos);
-    cycleSwap(A[pos], item);
+    await cycleSwap(A[pos], item);
     writes++;
 
     while (pos != cycle_start) {
@@ -38,7 +38,7 @@ async function CycleSort(A) {
       }
       // array[pos], item = item, array[pos]
       // await swap(A, cycle_start, pos);
-      cycleSwap(A[pos], item);
+      await cycleSwap(A[pos], item);
       writes++;
     }
   }
@@ -46,7 +46,8 @@ async function CycleSort(A) {
   return writes;
 }
 
-function cycleSwap(a, b) {
+async function cycleSwap(a, b) {
+  await sleep(5);
   console.log(a)
   let temp = a;
   a = b;
