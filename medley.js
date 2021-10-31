@@ -55,10 +55,10 @@ async function setup() {
     //   runningAlgortihm = "Heap";
     //   await HeapSort(values)
     // },
-    // async () => {
-    //   runningAlgortihm = "Insertion";
-    //   await InsertionSort(values);
-    // },
+    async () => {
+      runningAlgortihm = "Insertion";
+      await InsertionSort(values);
+    },
     // async () => {
     //   runningAlgortihm = "Selection";
     //   await SelectionSort(values);
