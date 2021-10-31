@@ -47,6 +47,7 @@ async function CycleSort(A) {
 }
 
 function cycleSwap(a, b) {
+  console.log(a)
   let temp = a;
   a = b;
   b = temp;
