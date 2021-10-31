@@ -27,7 +27,7 @@ async function CycleSort(A) {
 
     while (pos != cycle_start) {
       pos = cycle_start
-      for (let i = cycle_start + 1; i < A.length) {
+      for (let i = cycle_start + 1; i < A.length; i++) {
         if (A[i].value < item.value) {
           pos++;
         }
