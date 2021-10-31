@@ -4,6 +4,7 @@ async function CycleSort(A) {
   writes = 0
 
   for (let cycle_start = 0; cycle_start < A.length - 1; cycle_start++) {
+    await sleep(40)
     let item = A[cycle_start]
 
     let pos = cycle_start;
