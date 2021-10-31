@@ -27,7 +27,7 @@ async function CycleSort(A) {
     await cycleSwap(A[pos], item);
     writes++;
 
-    while (pos != cycle_start) {
+    while (pos != cycle_start) { 
       pos = cycle_start
       for (let i = cycle_start + 1; i < A.length; i++) {
         if (A[i].value < item.value) {

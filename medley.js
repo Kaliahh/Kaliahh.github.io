@@ -39,41 +39,41 @@ async function setup() {
   };
 
   let algorithms = [
-    async () => {
-      runningAlgortihm = "Merge";
-      await MergeSort(values, 0, values.length - 1);
-    },
-    async () => {
-      runningAlgortihm = "Quick";
-      await QuickSort(values, 0, values.length - 1);
-    },
-    async () => {
-      runningAlgortihm = "Fast Bubble";
-      await BubbleSort(values);
-    },
-    async () => {
-      runningAlgortihm = "Heap";
-      await HeapSort(values)
-    },
-    async () => {
-      runningAlgortihm = "Insertion";
-      await InsertionSort(values);
-    },
-    async () => {
-      runningAlgortihm = "Selection";
-      await SelectionSort(values);
-    },
-    async () => {
-      runningAlgortihm = "Shell";
-      await ShellSort(values);
-    },
-    async () => {
-      runningAlgortihm = "OddEven";
-      await OddEvenSort(values);
-    },
+    // async () => {
+    //   runningAlgortihm = "Merge";
+    //   await MergeSort(values, 0, values.length - 1);
+    // },
+    // async () => {
+    //   runningAlgortihm = "Quick";
+    //   await QuickSort(values, 0, values.length - 1);
+    // },
+    // async () => {
+    //   runningAlgortihm = "Fast Bubble";
+    //   await BubbleSort(values);
+    // },
+    // async () => {
+    //   runningAlgortihm = "Heap";
+    //   await HeapSort(values)
+    // },
+    // async () => {
+    //   runningAlgortihm = "Insertion";
+    //   await InsertionSort(values);
+    // },
+    // async () => {
+    //   runningAlgortihm = "Selection";
+    //   await SelectionSort(values);
+    // },
+    // async () => {
+    //   runningAlgortihm = "Shell";
+    //   await ShellSort(values);
+    // },
+    // async () => {
+    //   runningAlgortihm = "OddEven";
+    //   await OddEvenSort(values);
+    // },
     async () => {
       runningAlgortihm = "Gnome";
-      await GnomeSort(values);
+      await GnomeSortOpt(values);
     }
     // async () => {
     //   runningAlgortihm = "Cycle";

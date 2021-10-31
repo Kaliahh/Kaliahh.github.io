@@ -13,3 +13,29 @@ async function GnomeSort(A) {
     }
   }
 }
+
+
+async function GnomeSortOpt(A) {
+  for (let pos = 1; pos < A.length; pos++) {
+    await GSort(A, pos);
+  }
+}
+
+async function GSort(A, upper) {
+  let pos = upper;
+
+  while (pos > 0 && A[pos - 1].value > A[pos].value) {
+    await swap(A, pos - 1, pos);
+    pos--;
+  }
+}
+
+// procedure optimizedGnomeSort(a[]):
+//     for pos in 1 to length(a):
+//         gnomeSort(a, pos)
+//
+// procedure gnomeSort(a[], upperBound):
+//     pos := upperBound
+//     while pos > 0 and a[pos-1] > a[pos]:
+//         swap a[pos-1] and a[pos]
+//         pos := pos - 1
