@@ -1,7 +1,9 @@
-html, body {
-  margin: 0;
-  padding: 0;
+.fullWidth {
+  width: 100%;
+  height: 32vh;
 }
-canvas {
-  display: block;
+
+.halfWidth {
+  width: 49.682%;
+  height: 32vh;
 }

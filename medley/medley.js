@@ -14,11 +14,11 @@ async function setup() {
   p = floor(width / size);
 
   osc1 = new p5.Oscillator('sine');
-  osc1.start()
+  // osc1.start()
   osc1.amp(0.1)
 
   osc2 = new p5.Oscillator('triangle');
-  osc2.start()
+  // osc2.start()
   osc2.amp(0.1)
 
   for (let i = 0; i < p; i++) {
@@ -106,7 +106,9 @@ function draw() {
   background(51);
 
   if (!isShuffling) {
-    text(runningAlgortihm + " (x" + modifiers[runningAlgortihm] + "): " + Math.floor((millis() - start) / 1000), 20, width / 40)
+    text(runningAlgortihm
+      // + " (x" + modifiers[runningAlgortihm] + "): " + Math.floor((millis() - start) / 1000)
+      , 20, width / 40)
   }
 
   for (let i = 0; i < values.length; i++) {
