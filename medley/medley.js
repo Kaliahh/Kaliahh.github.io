@@ -9,7 +9,7 @@ async function setup() {
 
   runningAlgortihm = "";
   values = [];
-  size = 20;
+  size = width / 50;
   pause = 500;
   p = floor(width / size);
 
@@ -105,11 +105,9 @@ async function setup() {
 function draw() {
   background(51);
 
-  if (!isShuffling) {
-    text(runningAlgortihm
-      // + " (x" + modifiers[runningAlgortihm] + "): " + Math.floor((millis() - start) / 1000)
-      , 20, width / 40)
-  }
+  // if (!isShuffling) {
+  //   text(runningAlgortihm, 20, width / 40)
+  // }
 
   for (let i = 0; i < values.length; i++) {
     stroke(0);
