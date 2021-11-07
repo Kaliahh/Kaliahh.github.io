@@ -31,7 +31,6 @@ function draw() {
   }
 }
 
-
 function randomColor() {
   return color(random(100,255), random(100,255), random(100,255));
 }
