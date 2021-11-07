@@ -1,8 +1,9 @@
 class Piece {
-  constructor(x, y, isWhite) {
+  constructor(x, y, isWhite, image) {
     this.x = x;
     this.y = y;
     this.isWhite = isWhite;
+    this.image = image;
 
     this.hasMoved = false;
 
@@ -22,14 +23,14 @@ class Piece {
 
 
 class King extends Piece {
-  constructor(x, y, isWhite) {
-    super(x, y, isWhite);
+  constructor(x, y, isWhite, image) {
+    super(x, y, isWhite, image);
   }
 }
 
 class Pawn extends Piece {
-  constructor(x, y, isWhite) {
-    super(x, y, isWhite);
+  constructor(x, y, isWhite, image) {
+    super(x, y, isWhite, image);
   }
 
   move() {

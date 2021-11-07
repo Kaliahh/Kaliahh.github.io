@@ -49,7 +49,7 @@ function getClusterColors() {
   list = []
   
   list.push(color(230, 25, 75))   // Red
-  list.push(color(60, 180, 75))   // Greed
+  list.push(color(60, 180, 75))   // Green
   list.push(color(0, 130, 200))   // Blue
   list.push(color(255, 255, 25))  // Yellow
   list.push(color(240, 50, 230))  // Magenta

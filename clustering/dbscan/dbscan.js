@@ -65,7 +65,6 @@ function draw() {
 
 async function dbscan() {
   while (unvisited.length > 0) {
-    // await sleep(20)
     let p = unvisited.pop();
 
     p.visited = true;
