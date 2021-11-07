@@ -80,47 +80,59 @@ async function dbscan() {
       clusters.push(cluster);
       cluster.push(p);
 
-      while (neighborhood.length > 0) {
-        await sleep(20)
-        let neighbor = neighborhood.pop();
-        let b;
-        let index;
-
-        if (unvisited.includes(neighbor)) {
-          index = unvisited.indexOf(neighbor);
-          b = unvisited.splice(index, 1)[0];
-        }
-        else if (visited.includes(neighbor)) {
-          index = visited.indexOf(neighbor);
-          b = visited[index];
-        }
-        else {
-          console.log("This should not happen")
-        }
-
-        if (b.visited == false) {
-          b.visited = true;
-          visited.push(b);
-
-          let otherNeighborhood = getNeighborhood(b);
-
-          if (otherNeighborhood.length >= MinPts) {
-            b.corePoint = true;
-            for (let o = 0; o < otherNeighborhood.length; o++) {
-              neighborhood.push(otherNeighborhood[o])
-            }
-          }
-        }
-
-        if (isNotInCluster(b)) {
-          cluster.push(b);
-        }
-      }
+      await scanNeighborhood(neighborhood, cluster);
     }
     else {
       p.noise = true;
     }
   }
+}
+
+async function scanNeighborhood(nbh, cluster) {
+  while (nbh.length > 0) {
+    await sleep(20)
+    let neighbor = getNeighbor(nbh.pop())
+
+    if (neighbor.visited == false) {
+      neighbor.visited = true;
+      visited.push(neighbor);
+
+      let otherNeighborhood = getNeighborhood(neighbor);
+
+      if (otherNeighborhood.length >= MinPts) {
+        neighbor.corePoint = true;
+        scanOtherNeighborhood(nbh, otherNeighborhood);
+      }
+    }
+
+    if (isNotInCluster(neighbor)) {
+      cluster.push(neighbor);
+    }
+  }
+}
+
+function scanOtherNeighborhood(originalNeighborhood, otherNeighborhood) {
+  for (let i = 0; i < otherNeighborhood.length; i++) {
+    originalNeighborhood.push(otherNeighborhood[i])
+  }
+}
+
+function getNeighbor(temp) {
+  let neighbor = null;
+
+  if (unvisited.includes(temp)) {
+    index = unvisited.indexOf(temp);
+    neighbor = unvisited.splice(index, 1)[0];
+  }
+  else if (visited.includes(temp)) {
+    index = visited.indexOf(temp);
+    neighbor = visited[index];
+  }
+  else {
+    console.log("This should not happen")
+  }
+
+  return neighbor;
 }
 
 function isNotInCluster(point) {
