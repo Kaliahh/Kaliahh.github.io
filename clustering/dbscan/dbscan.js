@@ -7,19 +7,20 @@ async function setup() {
   epsilon = 60;
   MinPts = 7;
 
-  unvisited = [];
-  visited = [];
-  clusters = [];
-  colors = [];
+  
+
 
   while (true) {
+
+    unvisited = [];
+    visited = [];
+    clusters = [];
+    colors = [];
+
     unvisited = createPoints(numberOfPoints);
-
-    while (true) {
-      dbscan();
-
-      await sleep(20);
-    }
+    
+    await dbscan();
+    await sleep(500);
   }
 }
 
@@ -33,7 +34,7 @@ function draw() {
   
   for (let i = 0; i < visited.length; i++) {
     if (visited[i].noise) {
-      visited[i].color = color(255, 255, 0)
+      visited[i].color = color(255, 255, 255)
     }
     else {
       visited[i].color = color(0, 255, 0)
@@ -41,26 +42,24 @@ function draw() {
     visited[i].display()
   }
 
-  for (let i = 0; i < clusters.length; i++) {
-    if (colors[i] == undefined) {
-      colors[i] = randomColor();
-    }
-  }
 
   for (let i = 0; i < clusters.length; i++) {
-    c = randomColor();
     for (let j = 0; j < clusters[i].length; j++) {
+      if (colors[i] == undefined) {
+        colors[i] = randomColor();
+      }
+
       clusters[i][j].color = colors[i];
       
-
       clusters[i][j].displayNeighborhood(epsilon);
       clusters[i][j].display();
     }
   }
 }
 
-function dbscan() {
-  for (let i = 0; i < unvisited.length; i++) {
+async function dbscan() {
+  while (unvisited.length > 0) {
+    await sleep(20)
     let p = unvisited.pop();
 
     p.visited = true;
@@ -112,6 +111,8 @@ function dbscan() {
     else {
       p.noise = true;
     }
+
+    console.log(unvisited.length);
   }
 }
 
