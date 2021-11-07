@@ -42,19 +42,11 @@ function draw() {
 
 function drawChessPieces() {
   for (let i = 0; i < whitePieces.length; i++) {
-    drawPiece(whitePieces[i])
+    whitePieces[i].draw()
   }
   for (let i = 0; i < blackPieces.length; i++) {
-    drawPiece(blackPieces[i])
+    blackPieces[i].draw()
   }
-}
-
-function drawPiece(piece) {
-  image(piece.image, 
-        boardStart + piece.x * squareSize, 
-        piece.y * squareSize, 
-        squareSize, 
-        squareSize)
 }
 
 function drawChessBoard(startX) {
@@ -77,29 +69,29 @@ function drawChessBoard(startX) {
 }
 
 function setupPieces() {
-  whitePieces.push(new Piece(0, 7, true, wRook))
-  whitePieces.push(new Piece(1, 7, true, wKnight))
-  whitePieces.push(new Piece(2, 7, true, wBishop))
-  whitePieces.push(new Piece(3, 7, true, wQueen))
-  whitePieces.push(new Piece(4, 7, true, wKing))
-  whitePieces.push(new Piece(5, 7, true, wBishop))
-  whitePieces.push(new Piece(6, 7, true, wKnight))
-  whitePieces.push(new Piece(7, 7, true, wRook))
+  whitePieces.push(new Rook(0, 7, true, wRook))
+  whitePieces.push(new Knight(1, 7, true, wKnight))
+  whitePieces.push(new Bishop(2, 7, true, wBishop))
+  whitePieces.push(new Queen(3, 7, true, wQueen))
+  whitePieces.push(new King(4, 7, true, wKing))
+  whitePieces.push(new Bishop(5, 7, true, wBishop))
+  whitePieces.push(new Knight(6, 7, true, wKnight))
+  whitePieces.push(new Rook(7, 7, true, wRook))
   
   for (let i = 0; i < 8; i++) {
-    whitePieces.push(new Piece(i, 6, true, wPawn))
+    whitePieces.push(new Pawn(i, 6, true, wPawn))
   }
 
-  blackPieces.push(new Piece(0, 0, false, bRook))
-  blackPieces.push(new Piece(1, 0, false, bKnight))
-  blackPieces.push(new Piece(2, 0, false, bBishop))
-  blackPieces.push(new Piece(3, 0, false, bQueen))
-  blackPieces.push(new Piece(4, 0, false, bKing))
-  blackPieces.push(new Piece(5, 0, false, bBishop))
-  blackPieces.push(new Piece(6, 0, false, bKnight))
-  blackPieces.push(new Piece(7, 0, false, bRook))
+  blackPieces.push(new Rook(0, 0, false, bRook))
+  blackPieces.push(new Knight(1, 0, false, bKnight))
+  blackPieces.push(new Bishop(2, 0, false, bBishop))
+  blackPieces.push(new Queen(3, 0, false, bQueen))
+  blackPieces.push(new King(4, 0, false, bKing))
+  blackPieces.push(new Bishop(5, 0, false, bBishop))
+  blackPieces.push(new Knight(6, 0, false, bKnight))
+  blackPieces.push(new Rook(7, 0, false, bRook))
   
   for (let i = 0; i < 8; i++) {
-    blackPieces.push(new Piece(i, 1, false, bPawn))
+    blackPieces.push(new Pawn(i, 1, false, bPawn))
   }
 }

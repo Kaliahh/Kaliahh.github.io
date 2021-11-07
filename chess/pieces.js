@@ -19,10 +19,42 @@ class Piece {
   move() {
 
   }
+
+  draw() {
+    image(this.image, 
+          boardStart + this.x * squareSize, 
+          this.y * squareSize, 
+          squareSize, 
+          squareSize)
+  }
 }
 
 
 class King extends Piece {
+  constructor(x, y, isWhite, image) {
+    super(x, y, isWhite, image);
+  }
+}
+
+class Queen extends Piece {
+  constructor(x, y, isWhite, image) {
+    super(x, y, isWhite, image);
+  }
+}
+
+class Bishop extends Piece {
+  constructor(x, y, isWhite, image) {
+    super(x, y, isWhite, image);
+  }
+}
+
+class Rook extends Piece {
+  constructor(x, y, isWhite, image) {
+    super(x, y, isWhite, image);
+  }
+}
+
+class Knight extends Piece {
   constructor(x, y, isWhite, image) {
     super(x, y, isWhite, image);
   }
