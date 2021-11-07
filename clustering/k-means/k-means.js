@@ -10,7 +10,7 @@ async function setup() {
 
     listOfPoints = createPoints(numberOfPoints);
 
-    let listOfCentroidColors = getCentroidColors();
+    let listOfCentroidColors = getClusterColors();
     
     listOfCentroids = pickInitialCentroids(listOfPoints, listOfCentroidColors);
 
@@ -21,7 +21,7 @@ async function setup() {
         break;
       }
       else {
-        await sleep(70);
+        await sleep(300);
       }
       distanceMoved = 0;
     }
@@ -87,28 +87,17 @@ function updateCentroids(points, centroids) {
   }
   
   for (j = 0; j < centroids.length; j++) {
-    let x = positionList[j].x / pointsPerCentroid[j]
-    let y = positionList[j].y / pointsPerCentroid[j]
-
-    let v = createVector(x, y);
-    
-    distanceMoved += v.dist(centroids[j].position);
-
-    centroids[j].position = v
+    if (positionList[j] != undefined) {
+      let x = positionList[j].x / pointsPerCentroid[j];
+      let y = positionList[j].y / pointsPerCentroid[j];    
+  
+      let v = createVector(x, y);
+      
+      distanceMoved += v.dist(centroids[j].position);
+  
+      centroids[j].position = v
+    }
   }
-}
-
-function getCentroidColors() {
-  list = []
-  
-  list.push(color(230, 25, 75))
-  list.push(color(60, 180, 75))
-  list.push(color(0, 130, 200))
-  list.push(color(255, 255, 25))
-  list.push(color(240, 50, 230))
-  list.push(color(0, 0, 128))
-  
-  return list;
 }
 
 function pickInitialCentroids(list, colors) {

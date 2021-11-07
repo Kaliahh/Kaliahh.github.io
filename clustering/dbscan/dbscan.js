@@ -4,37 +4,39 @@ async function setup() {
 
   numberOfPoints = Math.floor(width / 3);
 
-  epsilon = 60;
-  MinPts = 7;
-
-  
-
+  epsilon = getEpsilon();
+  MinPts = 4;
 
   while (true) {
-
-    unvisited = [];
-    visited = [];
     clusters = [];
-    colors = [];
-
+    colors = getClusterColors();
     unvisited = createPoints(numberOfPoints);
+    visited = [];
     
     await dbscan();
-    await sleep(500);
+    await sleep(1000);
   }
+}
+
+function getEpsilon() {
+  // 300 -> 30
+  // 544 -> 35
+  // 750 (1080p) -> 40
+  // 1006 (1440p) -> 50
+  return Math.floor(0.0000205299 * Math.pow(width, 2) + 0.0012174476 * width + 27.8965922976)
 }
 
 function draw() {
   background(51);
 
   for (let i = 0; i < unvisited.length; i++) {
-    unvisited[i].color = color(255, 0, 0)
+    unvisited[i].color = color(255, 255, 255)
     unvisited[i].display()
   }
   
   for (let i = 0; i < visited.length; i++) {
     if (visited[i].noise) {
-      visited[i].color = color(255, 255, 255)
+      visited[i].color = color(100) 
     }
     else {
       visited[i].color = color(0, 255, 0)
@@ -50,16 +52,20 @@ function draw() {
       }
 
       clusters[i][j].color = colors[i];
-      
-      clusters[i][j].displayNeighborhood(epsilon);
       clusters[i][j].display();
+
+      // if (!(clusters[i][j].corePoint)) {
+      //   clusters[i][j].color = color(255, 255, 255)
+      // }
+
+      clusters[i][j].displayNeighborhood(epsilon);
     }
   }
 }
 
 async function dbscan() {
   while (unvisited.length > 0) {
-    await sleep(20)
+    // await sleep(20)
     let p = unvisited.pop();
 
     p.visited = true;
@@ -68,13 +74,15 @@ async function dbscan() {
     let neighborhood = getNeighborhood(p);
 
     if (neighborhood.length >= MinPts) {
+      p.corePoint = true;
       let cluster = [];
 
       clusters.push(cluster);
       cluster.push(p);
 
-      for (let j = 0; j < neighborhood.length; j++) {
-        let neighbor = neighborhood[j];
+      while (neighborhood.length > 0) {
+        await sleep(20)
+        let neighbor = neighborhood.pop();
         let b;
         let index;
 
@@ -97,6 +105,7 @@ async function dbscan() {
           let otherNeighborhood = getNeighborhood(b);
 
           if (otherNeighborhood.length >= MinPts) {
+            b.corePoint = true;
             for (let o = 0; o < otherNeighborhood.length; o++) {
               neighborhood.push(otherNeighborhood[o])
             }
@@ -111,39 +120,12 @@ async function dbscan() {
     else {
       p.noise = true;
     }
-
-    console.log(unvisited.length);
   }
 }
 
-
-
-/*
-
-mark all objects as unvisited
-do
-  randomly select an unvisited object p
-  mark p as visited
-
-  if the epsilon-neighborhood of p has at least MinPts object
-    create a new cluster C, and add p to C
-    let N be the set of objects in the epsilon-neighborhood of p
-    for each point p' in N
-      if p' is unvisited
-        mark p' as visited
-        if the epsilon neighborhood of p' has at least MinPts points
-        add those points to N
-      if p' is not yet a member of any cluster, add p' to C
-    end for
-    output C
-  else mark p as noise
-until no object is unvisited
-
-*/
-
 function isNotInCluster(point) {
   for (let i = 0; i < clusters.length; i++) {
-    if (clusters[i].indexOf(point) != -1) {
+    if (clusters[i].includes(point)) {
       return false;
     }
   }

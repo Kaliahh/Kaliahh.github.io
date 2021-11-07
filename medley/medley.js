@@ -93,12 +93,12 @@ async function setup() {
       await algorithms[i]();
       end = millis();
 
-      console.log(runningAlgortihm + ": " + Math.floor(end - start))
+      // console.log(runningAlgortihm + ": " + Math.floor(end - start))
 
       await sleep(pause);
     }
 
-    console.log("##################")
+    // console.log("##################")
   }
 }
 

@@ -15,6 +15,7 @@ class Point {
     
     this.visited = false;
     this.noise = false;
+    this.corePoint = false;
   }
   
   display() {
