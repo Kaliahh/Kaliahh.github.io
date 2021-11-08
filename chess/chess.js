@@ -23,38 +23,54 @@ async function setup() {
 
   filledColor = color(118,150,86)
   unFilledColor = color(238,238,210)
+  filledRecentColor = color(246,246,105)
+  unfilledRecentColor = color(186,202,43)
 
   while (true) {
     whitePieces = [];
     blackPieces = [];
-    allPieces = {};
+    allPieces = getCleanBoard();
 
-    let checkmate = false;
+    let stop = false;
 
     setupPieces();  
 
-    while (!checkmate) {
-      makePlay(true);
+    while (true) {
+      await sleep(500);
 
-      await sleep(100);
+      stop = await makePlay(true);
+      if (stop) {
+        break;
+      }
 
-      makePlay(false);
+      console.log(allPieces)
 
-      await sleep(100);
+      await sleep(500);
+
+      stop = await makePlay(false);
+      if (stop) {
+        break;
+      }
+
+      console.log(allPieces)
     }
+
+    await sleep(2000)
   }
 }
 
-function makePlay(whitePlays) {
+async function makePlay(whitePlays) {
   let pieces = (whitePlays ? whitePieces : blackPieces);
+  let otherPieces = (whitePlays ? blackPieces : whitePieces);
   let pieceFound = false;
 
   let p;
-  
-  while (!pieceFound) {
-    let randomPieceIndex = getRandomInt(0, pieces.length);
 
-    p = pieces[randomPieceIndex];
+  shuffleArray(pieces);
+
+  for (let i = 0; i < pieces.length; i++) {
+
+    p = pieces[i];
 
     p.findLegalMoves(allPieces);
 
@@ -62,13 +78,27 @@ function makePlay(whitePlays) {
       pieceFound = true;
       if (p.attackMoves.length != 0) {
         let randomAttack = getRandomInt(0, p.attackMoves.length);
-        p.attack(randomAttack);
+
+        let a = p.attackMoves[randomAttack];
+
+        p.attack(a[0], a[1], allPieces, otherPieces);
       }
       else {
         let randomMove = getRandomInt(0, p.legalMoves.length);
-        p.move(randomMove);
+
+        let a = p.legalMoves[randomMove];
+         
+        p.move(a[0], a[1], allPieces);
       }
+      break
     }
+  } 
+
+  if (!pieceFound) {
+    return true;
+  }
+  else {
+    return false;
   }
 }
 
@@ -109,6 +139,7 @@ function drawChessBoard(startX) {
 }
 
 function setupPieces() {
+
   whitePieces.push(new Rook(0, 7, true, wRook))
   whitePieces.push(new Knight(1, 7, true, wKnight))
   whitePieces.push(new Bishop(2, 7, true, wBishop))
@@ -121,6 +152,8 @@ function setupPieces() {
   for (let i = 0; i < 8; i++) {
     whitePieces.push(new Pawn(i, 6, true, wPawn))
   }
+
+  // whitePieces.push(new Pawn(0, 6, true, wPawn))
 
   blackPieces.push(new Rook(0, 0, false, bRook))
   blackPieces.push(new Knight(1, 0, false, bKnight))
@@ -135,17 +168,30 @@ function setupPieces() {
     blackPieces.push(new Pawn(i, 1, false, bPawn))
   }
 
-
+  // blackPieces.push(new Pawn(0, 5, false, bPawn))
 
   for (let i = 0; i < whitePieces.length; i++) {
-    allPieces[whitePieces[i].position] = whitePieces[i];
-
-    // allPieces.push(whitePieces[i])
+    allPieces[whitePieces[i].y][whitePieces[i].x] = whitePieces[i]
   }
 
   for (let i = 0; i < blackPieces.length; i++) {
-    allPieces[blackPieces[i].position] = blackPieces[i];
-
-    // allPieces.push(blackPieces[i])
+    allPieces[blackPieces[i].y][blackPieces[i].x] = blackPieces[i]
   }
+
+  console.log(allPieces)
+}
+
+function getCleanBoard() {
+  let n = [
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null],
+    [null, null, null, null, null, null, null, null]
+  ]
+
+  return n;
 }

@@ -1,6 +1,7 @@
 class Piece {
   constructor(x, y, isWhite, image) {
-    this.position = new Position(x, y)
+    this.x = x
+    this.y = y
     this.isWhite = isWhite;
     this.image = image;
 
@@ -13,12 +14,30 @@ class Piece {
 
   }
 
-  move(x, y) {
+  move(x, y, allPieces) {
+    allPieces[this.y][this.x] = null;
+    
+    this.x = x;
+    this.y = y;
+    this.hasMoved = true;
 
+    allPieces[this.y][this.x] = this;
+
+    this.legalMoves = []
   }
 
-  attack(x, y) {
+  attack(x, y, allPieces, pieceSet) {
+    allPieces[this.y][this.x] = null;
+    pieceSet.splice(pieceSet.indexOf(allPieces[y][x]), 1);
+    
+    this.x = x;
+    this.y = y;
+    this.hasMoved = true;
 
+    allPieces[this.y][this.x] = this;
+
+    this.legalMoves = []
+    this.attackMoves = []
   }
 
   draw() {
@@ -29,28 +48,47 @@ class Piece {
           squareSize)
   }
 
-  moveOffBoard(pos) {
-    if (pos.y >= 8 || pos.y < 0 || pos.x >= 8 || pos.x < 0) {
+  moveOffBoard(x, y) {
+    if (y >= 8 || y < 0 || x >= 8 || x < 0) {
       return true;
     }
     return false;
   }
 
-  checkMove(pos, allPieces) {
-    if (!moveOffBoard(pos)) {
-      if (allPieces[pos] == undefined) {
-        this.legalMoves.push(pos);
-      }
-    }
+  checkMoveAndAttack(x, y, allPieces) {
+    let a = this.checkMove(x, y, allPieces);
+    let b = this.checkAttack(x, y, allPieces);
+
+    return a && b;
   }
 
-  checkAttack(pos, allPieces) {
-    if (!moveOffBoard(pos)) {
-      if (allPieces[pos] != undefined && allPieces[pos].isWhite != this.isWhite) {
-        this.attackMoves.push(pos);
-        this.legalMoves.push(pos);
+  checkMoveOrAttack(x, y, allPieces) {
+    let a = this.checkMove(x, y, allPieces);
+    let b = this.checkAttack(x, y, allPieces);
+
+    return a || b;
+  }
+
+  checkMove(x, y, allPieces) {
+    if (!this.moveOffBoard(x, y)) {
+      if (allPieces[y][x] == null) {
+        this.legalMoves.push([x, y]);
+        return true;
       }
     }
+
+    return false;
+  }
+
+  checkAttack(x, y, allPieces) {
+    if (!this.moveOffBoard(x, y)) {
+      if (allPieces[y][x] != null && allPieces[y][x].isWhite != this.isWhite) {
+        this.attackMoves.push([x, y]);
+        this.legalMoves.push([x, y]);
+        return true;
+      }
+    }
+    return false;
   }
 }
 
@@ -65,35 +103,24 @@ class Pawn extends Piece {
     let direction;
 
     if (this.isWhite) {
-      direction = 1;
-    }
-    else {
       direction = -1;
     }
+    else {
+      direction = 1;
+    }
 
-    if (this.hasMoved) {
-      let possibleMove = new Position(this.position.x, this.position.y + (direction * 2))
-      this.checkMove(possibleMove, allPieces)
+    if (!this.hasMoved) {
+      let m = this.checkMove(this.x, this.y + direction, allPieces)
+      if (m) {
+        this.checkMove(this.x, this.y + (direction * 2), allPieces)
+      }
+    }
+    else {
+      this.checkMove(this.x, this.y + direction, allPieces)
     }
     
-    let possibleMove = new Position(this.position.x, this.position.y + direction)
-    this.checkMove(possibleMove, allPieces)
-
-    let possibleAttack = new Position(this.position.x - 1, this.position.y + direction)
-    this.checkAttack(possibleAttack, allPieces);
-
-    possibleAttack = new Position(this.position.x + 1, this.position.y + direction)
-    this.checkAttack(possibleAttack, allPieces)
-  }
-
-  
-
-  move(pos) {
-    
-  }
-
-  attack(pos) {
-    
+    this.checkAttack(this.x - 1, this.y + direction, allPieces);
+    this.checkAttack(this.x + 1, this.y + direction, allPieces)
   }
 }
 
