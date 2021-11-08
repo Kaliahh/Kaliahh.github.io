@@ -46,33 +46,39 @@ function randomColor() {
 }
 
 function getClusterColors() {
-  list = []
+  list1 = []
+  list2 = []
   
-  list.push(color(230, 25, 75))   // Red
-  list.push(color(60, 180, 75))   // Green
-  list.push(color(0, 130, 200))   // Blue
-  list.push(color(255, 255, 25))  // Yellow
-  list.push(color(240, 50, 230))  // Magenta
-  list.push(color(245, 130, 48))  // Orange
-  list.push(color(70, 240, 240))  // Cyan
-  list.push(color(145, 30, 180))  // Purple
-  list.push(color(220, 190, 255)) // Lavender
-  list.push(color(170, 255, 195)) // Mint
-  list.push(color(255, 190, 212)) // Pink
+  list1.push(color(230, 25, 75))   // Red
+  list1.push(color(60, 180, 75))   // Green
+  list1.push(color(0, 130, 200))   // Blue
+  list1.push(color(255, 255, 25))  // Yellow
+  list1.push(color(240, 50, 230))  // Magenta
+  list1.push(color(245, 130, 48))  // Orange
+  list2.push(color(70, 240, 240))  // Cyan
+  list2.push(color(145, 30, 180))  // Purple
+  list2.push(color(220, 190, 255)) // Lavender
+  list2.push(color(170, 255, 195)) // Mint
+  list2.push(color(255, 190, 212)) // Pink
   
+  shuffleArray(list1)
+  shuffleArray(list2)
+
+  let list = list1.concat(list2)
+
   return list;
 }
 
 
-// function shuffleArray(array) {
-//     for (let i = array.length - 1; i > 0; i--) {
-//         let j = getRandomInt(0, array.length);
-//         swap(array, i, j);
-//     }
-// }
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = getRandomInt(0, array.length);
+        swap(array, i, j);
+    }
+}
 
-// function swap(arr, a, b) {
-//   let temp = arr[a];
-//   arr[a] = arr[b]
-//   arr[b] = temp;
-// }
+function swap(arr, a, b) {
+  let temp = arr[a];
+  arr[a] = arr[b]
+  arr[b] = temp;
+}
