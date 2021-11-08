@@ -24,12 +24,52 @@ async function setup() {
   filledColor = color(118,150,86)
   unFilledColor = color(238,238,210)
 
-  whitePieces = [];
-  blackPieces = [];
+  while (true) {
+    whitePieces = [];
+    blackPieces = [];
+    allPieces = {};
 
-  let checkmate = false;
+    let checkmate = false;
 
-  setupPieces();  
+    setupPieces();  
+
+    while (!checkmate) {
+      makePlay(true);
+
+      await sleep(100);
+
+      makePlay(false);
+
+      await sleep(100);
+    }
+  }
+}
+
+function makePlay(whitePlays) {
+  let pieces = (whitePlays ? whitePieces : blackPieces);
+  let pieceFound = false;
+
+  let p;
+  
+  while (!pieceFound) {
+    let randomPieceIndex = getRandomInt(0, pieces.length);
+
+    p = pieces[randomPieceIndex];
+
+    p.findLegalMoves(allPieces);
+
+    if (p.legalMoves.length != 0) {
+      pieceFound = true;
+      if (p.attackMoves.length != 0) {
+        let randomAttack = getRandomInt(0, p.attackMoves.length);
+        p.attack(randomAttack);
+      }
+      else {
+        let randomMove = getRandomInt(0, p.legalMoves.length);
+        p.move(randomMove);
+      }
+    }
+  }
 }
 
 function draw() {
@@ -93,5 +133,19 @@ function setupPieces() {
   
   for (let i = 0; i < 8; i++) {
     blackPieces.push(new Pawn(i, 1, false, bPawn))
+  }
+
+
+
+  for (let i = 0; i < whitePieces.length; i++) {
+    allPieces[whitePieces[i].position] = whitePieces[i];
+
+    // allPieces.push(whitePieces[i])
+  }
+
+  for (let i = 0; i < blackPieces.length; i++) {
+    allPieces[blackPieces[i].position] = blackPieces[i];
+
+    // allPieces.push(blackPieces[i])
   }
 }
