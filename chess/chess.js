@@ -177,8 +177,6 @@ function setupPieces() {
   for (let i = 0; i < blackPieces.length; i++) {
     allPieces[blackPieces[i].y][blackPieces[i].x] = blackPieces[i]
   }
-
-  console.log(allPieces)
 }
 
 function getCleanBoard() {
