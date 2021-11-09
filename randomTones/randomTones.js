@@ -6,7 +6,8 @@ function setup() {
   index = 0;
 
   selectedTone = "Click mouse";
-  roundStatus = "";
+  rectSize = width / 12;
+  rectCounter = 0;
 }
 
 function draw() {
@@ -15,15 +16,18 @@ function draw() {
   textSize(size)
   fill(255)
   textAlign(CENTER, CENTER)
-  if (roundStatus == "") {
-    text(selectedTone, width / 2, height / 2)
+  text(selectedTone, width / 2, height / 2)
+
+  if (rectCounter == 12) {
+    fill(color(60, 180, 75))
   }
   else {
-    text(selectedTone, width / 2, height / 2)
-    size = width / 10
-    textSize(size)
-    text(roundStatus, width / 2, height - size)
+    fill(255)
   }
+
+  rect(0,0, rectSize * rectCounter, height / 20)
+  // rect(0, height - height / 20, rectSize * rectCounter, height / 20)
+  rect(width - rectSize * rectCounter, height - height / 20, width, height)
 }
 
 
@@ -63,8 +67,6 @@ function mousePressed() {
 
   mousePressX = mouseX;
   mousePressY = mouseY;
-
-  console.log('mousePressed', mousePressX, mousePressY)
 }
 
 function mouseReleased(e) {
@@ -84,9 +86,10 @@ function mouseClicked() {
 }
 
 function singleTap() {
+  rectCounter++;
   if (index == 0) {
     shuffleArray(tones);
-    roundStatus = ""
+    rectCounter = 1
   }
 
   selectedTone = tones[index]
@@ -95,6 +98,5 @@ function singleTap() {
 
   if (index == tones.length) {
     index = 0;
-    roundStatus = "Last in this round"
   }
 }
