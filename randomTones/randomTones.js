@@ -40,10 +40,12 @@ function touchStarted() {
     index = 0;
     roundStatus = "Last in this round"
   }
+
+  return false;
 }
 
 function touchEnded() {
-
+  return false;
 }
 
 function mouseClicked() {
