@@ -27,14 +27,6 @@ function draw() {
 }
 
 function touchStarted() {
-  mouseClicked();
-}
-
-function touchEnded() {
-  
-}
-
-function mouseClicked() {
   if (index == 0) {
     shuffleArray(tones);
     roundStatus = ""
@@ -48,6 +40,26 @@ function mouseClicked() {
     index = 0;
     roundStatus = "Last in this round"
   }
+}
+
+function touchEnded() {
+
+}
+
+function mouseClicked() {
+  // if (index == 0) {
+  //   shuffleArray(tones);
+  //   roundStatus = ""
+  // }
+
+  // selectedTone = tones[index]
+
+  // index++;
+
+  // if (index == tones.length) {
+  //   index = 0;
+  //   roundStatus = "Last in this round"
+  // }
 }
 
 
