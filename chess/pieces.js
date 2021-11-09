@@ -90,6 +90,17 @@ class Piece {
     }
     return false;
   }
+
+  checkIfNotMoveThenAttack(x, y, allPieces) {
+    let a = this.checkMove(x, y, allPieces)
+
+    if (a == false) {
+      this.checkAttack(x, y, allPieces)
+      return true;
+    }
+
+    return false;
+  } 
 }
 
 class Pawn extends Piece {
@@ -131,11 +142,69 @@ class King extends Piece {
   constructor(x, y, isWhite, image) {
     super(x, y, isWhite, image);
   }
+
+  findLegalMoves(allPieces) {
+
+    this.checkIfNotMoveThenAttack(this.x + 1, this.y, allPieces);
+    this.checkIfNotMoveThenAttack(this.x - 1, this.y, allPieces);
+    this.checkIfNotMoveThenAttack(this.x, this.y + 1, allPieces);
+    this.checkIfNotMoveThenAttack(this.x, this.y - 1, allPieces);
+    this.checkIfNotMoveThenAttack(this.x + 1, this.y + 1, allPieces);
+    this.checkIfNotMoveThenAttack(this.x - 1, this.y - 1, allPieces);
+    this.checkIfNotMoveThenAttack(this.x + 1, this.y - 1, allPieces);
+    this.checkIfNotMoveThenAttack(this.x - 1, this.y + 1, allPieces);
+  }
 }
 
 class Queen extends Piece {
   constructor(x, y, isWhite, image) {
     super(x, y, isWhite, image);
+  }
+
+  findLegalMoves(allPieces) {
+    let stopPosX = false;
+    let stopNegX = false;
+    let stopPosY = false;
+    let stopNegY = false;
+
+    let stopPosPos = false;
+    let stopNegNeg = false;
+    let stopPosNeg = false;
+    let stopNegPos = false;
+
+    for (let i = 1; i < 8; i++) {
+      if (!stopPosX) {
+        stopPosX = this.checkIfNotMoveThenAttack(this.x + i, this.y, allPieces);
+      }
+
+      if (!stopNegX) {
+        stopNegX = this.checkIfNotMoveThenAttack(this.x - i, this.y, allPieces);
+      }
+
+      if (!stopPosY) {
+        stopPosY = this.checkIfNotMoveThenAttack(this.x, this.y + i, allPieces);
+      }
+
+      if (!stopNegY) {
+        stopNegY = this.checkIfNotMoveThenAttack(this.x, this.y - i, allPieces);
+      }
+
+      if (!stopPosPos) {
+        stopPosPos = this.checkIfNotMoveThenAttack(this.x + i, this.y + i, allPieces);
+      }
+
+      if (!stopNegNeg) {
+        stopNegNeg = this.checkIfNotMoveThenAttack(this.x - i, this.y - i, allPieces);
+      }
+
+      if (!stopPosNeg) {
+        stopPosNeg = this.checkIfNotMoveThenAttack(this.x + i, this.y - i, allPieces);
+      }
+
+      if (!stopNegPos) {
+        stopNegPos = this.checkIfNotMoveThenAttack(this.x - i, this.y + i, allPieces);
+      }
+    }
   }
 }
 
@@ -143,17 +212,82 @@ class Bishop extends Piece {
   constructor(x, y, isWhite, image) {
     super(x, y, isWhite, image);
   }
+
+  findLegalMoves(allPieces) {
+    let stopPosPos = false;
+    let stopNegNeg = false;
+    let stopPosNeg = false;
+    let stopNegPos = false;
+
+    for (let i = 1; i < 8; i++) {
+      if (!stopPosPos) {
+        stopPosPos = this.checkIfNotMoveThenAttack(this.x + i, this.y + i, allPieces);
+      }
+
+      if (!stopNegNeg) {
+        stopNegNeg = this.checkIfNotMoveThenAttack(this.x - i, this.y - i, allPieces);
+      }
+
+      if (!stopPosNeg) {
+        stopPosNeg = this.checkIfNotMoveThenAttack(this.x + i, this.y - i, allPieces);
+      }
+
+      if (!stopNegPos) {
+        stopNegPos = this.checkIfNotMoveThenAttack(this.x - i, this.y + i, allPieces);
+      }
+    }
+  }
 }
 
 class Rook extends Piece {
   constructor(x, y, isWhite, image) {
     super(x, y, isWhite, image);
   }
+
+  findLegalMoves(allPieces) {
+
+    let stopPosX = false;
+    let stopNegX = false;
+    let stopPosY = false;
+    let stopNegY = false;
+
+    for (let i = 1; i < 8; i++) {
+      if (!stopPosX) {
+        stopPosX = this.checkIfNotMoveThenAttack(this.x + i, this.y, allPieces);
+      }
+
+      if (!stopNegX) {
+        stopNegX = this.checkIfNotMoveThenAttack(this.x - i, this.y, allPieces);
+      }
+
+      if (!stopPosY) {
+        stopPosY = this.checkIfNotMoveThenAttack(this.x, this.y + i, allPieces);
+      }
+
+      if (!stopNegY) {
+        stopNegY = this.checkIfNotMoveThenAttack(this.x, this.y - i, allPieces);
+      }
+    }
+  }
 }
 
 class Knight extends Piece {
   constructor(x, y, isWhite, image) {
     super(x, y, isWhite, image);
+  }
+
+  findLegalMoves(allPieces) {
+    this.checkMoveOrAttack(this.x - 1, this.y - 2, allPieces)
+    this.checkMoveOrAttack(this.x - 1, this.y + 2, allPieces)
+
+    this.checkMoveOrAttack(this.x + 1, this.y - 2, allPieces)
+    this.checkMoveOrAttack(this.x + 1, this.y + 2, allPieces)
+
+    this.checkMoveOrAttack(this.x - 2, this.y - 1, allPieces)
+    this.checkMoveOrAttack(this.x - 2, this.y + 1, allPieces)
+
+    this.checkMoveOrAttack(this.x + 2, this.y - 1, allPieces)
+    this.checkMoveOrAttack(this.x + 2, this.y + 1, allPieces)
   }
 }
 

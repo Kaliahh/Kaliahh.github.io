@@ -43,7 +43,7 @@ async function setup() {
         break;
       }
 
-      console.log(allPieces)
+      // console.log(allPieces)
 
       await sleep(500);
 
@@ -52,7 +52,7 @@ async function setup() {
         break;
       }
 
-      console.log(allPieces)
+      // console.log(allPieces)
     }
 
     await sleep(2000)
