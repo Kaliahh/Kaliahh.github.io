@@ -26,43 +26,7 @@ function draw() {
   }
 }
 
-function touchStarted() {
-  if (index == 0) {
-    shuffleArray(tones);
-    roundStatus = ""
-  }
 
-  selectedTone = tones[index]
-
-  index++;
-
-  if (index == tones.length) {
-    index = 0;
-    roundStatus = "Last in this round"
-  }
-
-  return false;
-}
-
-function touchEnded() {
-  return false;
-}
-
-function mouseClicked() {
-  // if (index == 0) {
-  //   shuffleArray(tones);
-  //   roundStatus = ""
-  // }
-
-  // selectedTone = tones[index]
-
-  // index++;
-
-  // if (index == tones.length) {
-  //   index = 0;
-  //   roundStatus = "Last in this round"
-  // }
-}
 
 
 function shuffleArray(array) {
@@ -82,4 +46,55 @@ function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min) + min);
+}
+
+
+const isTouchDevice =  function() {
+  const is_or_not =  'ontouchstart' in window        // works on most browsers 
+      || navigator.maxTouchPoints;       // works on IE10/11 and Surface
+
+  return is_or_not ? true : false; // Fix to always return true or false
+};
+
+
+function mousePressed() {
+  if( isTouchDevice() )
+   return;
+
+  mousePressX = mouseX;
+  mousePressY = mouseY;
+
+  console.log('mousePressed', mousePressX, mousePressY)
+}
+
+function mouseReleased(e) {
+  if( isTouchDevice() )
+    return;
+
+  if(mousePressX == mouseX && mousePressY == mouseY)
+    singleTap();
+
+}
+
+function mouseClicked() {
+  if( !isTouchDevice() )
+    return;
+
+  singleTap();
+}
+
+function singleTap() {
+  if (index == 0) {
+    shuffleArray(tones);
+    roundStatus = ""
+  }
+
+  selectedTone = tones[index]
+
+  index++;
+
+  if (index == tones.length) {
+    index = 0;
+    roundStatus = "Last in this round"
+  }
 }
