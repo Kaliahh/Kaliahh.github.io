@@ -26,6 +26,10 @@ function draw() {
   }
 }
 
+function touchStarted() {
+  mouseClicked()
+}
+
 function mouseClicked() {
   if (index == 0) {
     shuffleArray(tones);
