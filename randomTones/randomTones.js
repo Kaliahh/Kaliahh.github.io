@@ -1,7 +1,7 @@
 function setup() {
   createCanvas(windowWidth, windowHeight)
-
-  tones = ["A", "Bb", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"]
+  
+  tones = []
 
   index = 0;
 
@@ -28,6 +28,72 @@ function draw() {
   rect(0,0, rectSize * rectCounter, height / 20)
   // rect(0, height - height / 20, rectSize * rectCounter, height / 20)
   rect(width - rectSize * rectCounter, height - height / 20, width, height)
+}
+
+function singleTap() {
+  rectCounter++;
+  if (index == 0) {
+    tones = createArrayOfTones();
+    shuffleArray(tones);
+    rectCounter = 1
+  }
+
+  selectedTone = tones[index]
+
+  index++;
+
+  if (index == tones.length) {
+    index = 0;
+  }
+}
+
+function resetArray(tones) {
+  tones = [...tonesTemplate]
+
+
+}
+
+function createArrayOfTones() {
+  list = []
+
+  list = ["A", "B", "C", "D", "E", "F", "G"]
+
+  if (random() < 0.5) {
+    list.push("Bb")
+  }
+  else {
+    list.push("A#")
+  }
+
+  if (random() < 0.5) {
+    list.push("Db")
+  }
+  else {
+    list.push("C#")
+  }
+
+  if (random() < 0.5) {
+    list.push("Eb")
+  }
+  else {
+    list.push("D#")
+  }
+
+  if (random() < 0.5) {
+    list.push("Gb")
+  }
+  else {
+    list.push("F#")
+  }
+
+  if (random() < 0.5) {
+    list.push("Ab")
+  }
+  else {
+    list.push("G#")
+  }
+
+  return list;
 }
 
 
@@ -73,7 +139,7 @@ function mouseReleased(e) {
   if( isTouchDevice() )
     return;
 
-  if(mousePressX == mouseX && mousePressY == mouseY)
+  // if(mousePressX == mouseX && mousePressY == mouseY)
     singleTap();
 
 }
@@ -85,18 +151,3 @@ function mouseClicked() {
   singleTap();
 }
 
-function singleTap() {
-  rectCounter++;
-  if (index == 0) {
-    shuffleArray(tones);
-    rectCounter = 1
-  }
-
-  selectedTone = tones[index]
-
-  index++;
-
-  if (index == tones.length) {
-    index = 0;
-  }
-}
