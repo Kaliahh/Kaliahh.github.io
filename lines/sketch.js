@@ -5,7 +5,7 @@ let time = 0;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  background(51);
+  background(44);
 
   time = frameCount;
 
@@ -18,17 +18,20 @@ function setup() {
 }
 
 function draw() {
-
+  background(0, 6)
+  
   for (i = 0; i < spheres.length; i++) {
     spheres[i].move();
     spheres[i].updateColor();
     spheres[i].display();
     }
 
-  if (frameCount > time + 1000) {
-    background(51);
-    time = frameCount;
-  }
+  // if (frameCount > time + 1000) {
+  //   background(51);
+  //   time = frameCount;
+  // }
+  
+  
 }
 
 function randomColor() {

@@ -5,7 +5,7 @@ function setup() {
 
   index = 0;
 
-  selectedTone = "Click mouse";
+  selectedTone = "Click anywhere";
   rectSize = width / 12;
   rectCounter = 0;
 }
