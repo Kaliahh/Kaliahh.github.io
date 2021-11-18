@@ -41,10 +41,22 @@ class Message {
 
   moveTowardsTarget() {
     // console.log(this.target)
-    let vec = createVector(this.target.position.x, this.target.position.y)
+    let vec = this.target.position.copy()
     vec.sub(this.position)
+    let fullVec = vec.copy()
+    
+
+    if (fullVec.mag() / 100 < 2) {
+      fullVec.normalize()
+      fullVec.mult(2)
+    }
+    else {
+      fullVec.setMag(fullVec.mag() / 100);
+    }
+
     vec.normalize()
-    // vec.mult(100)
+
+    vec.mult(fullVec.mag())
     this.position.add(vec)
 
     if (distanceBetweenTwoPoints(this.position, this.target.position) <= 1) {

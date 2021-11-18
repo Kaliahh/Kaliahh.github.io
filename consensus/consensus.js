@@ -4,9 +4,9 @@ async function setup() {
 
   medium = new Medium();
 
-  nodeList = createNodes(width / 40, medium)
+  nodeList = createNodes(width / 20, medium)
 
-  arrangeInCircle(nodeList);
+  // arrangeInCircle(nodeList);
 
   for (let i = 0; i < nodeList.length; i++) {
     nodeList[i].run();
@@ -26,6 +26,7 @@ function draw() {
 
 
   for (let i = 0; i < nodeList.length; i++) {
+    // nodeList[i].move();
     nodeList[i].display();
   }
 

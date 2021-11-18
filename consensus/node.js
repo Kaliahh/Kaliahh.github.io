@@ -16,29 +16,20 @@ class Node {
     this.isRunning;
 
     this.counter = 0;
+
+    this.direction = createVector();
+    this.speed = 1;
   }
 
   async run() {
-    // this.isRunning = true;
-
-    // while (this.isRunning) {
-    //   await sleep(100)
-    // }
-
     let next = randomRecepient();
 
     if (this.index == 0) {
-      this.multicast(next.index)
-    }
-
-    // TODO: Hvis mit index er i beskeden, så er det mig der multicaster næste gang.
-
-    // this.receive("a")
-    // this.receive("a")
-    
+      this.reliableMulticast(next.index)
+    }   
   }
 
-  async multicast(message) {
+  async reliableMulticast(message) {
 
     for (let i = 0; i < nodeList.length; i++) {
       if (i != this.index) {
@@ -48,41 +39,54 @@ class Node {
   } 
 
   async receive(message) {
-    if (message.message == this.index && message.message != -1) {
+    if (message.message == this.index) {
       this.counter += 1;
-      console.log(this.counter)
 
       if (this.counter == nodeList.length - 1) {
         let next = randomRecepient();
 
-        this.multicast(next.index);
+        this.reliableMulticast(next.index);
+
+        this.counter = 0;
       }
     }
-    else if (message.message == this.index && message.message == -1) {
-      console.log("First one")
-    }
-    else if (message.message != this.index && message.message == -1) {
-      console.log("Second one")
-    }
-    else if (message.message != this.index && message.message != -1) {
+    else {
       this.medium.send(this, nodeList[message.message], message.message);
     }
-    else {
-      console.log("Last one")
-    }
-
-
-    // let recepient = randomRecepient(this.index);
-
-    // this.medium.send(this, recepient, Math.floor(random() * 100));
-
-    // console.log(message.message)
   }
 
   display() {
     fill(this.color)
     noStroke()
     ellipse(this.position.x, this.position.y, this.diameter, this.diameter)
+  }
+
+  move() {
+    let rateOfChange = 0.01;
+
+    if (random(0,1) < 0.5) {
+      this.direction.x += random(-rateOfChange, rateOfChange);
+    }
+
+    else {
+      this.direction.y += random(-rateOfChange, rateOfChange);
+    }
+
+    this.direction.normalize().mult(this.speed);
+
+    this.position.add(this.direction);
+
+
+    // this.x += this.direction.x * this.speed;
+    // this.y += this.direction.y * this.speed;
+
+    if (this.position.x <= 0 || this.position.x >= width) {
+      this.direction = createVector(-this.direction.x, this.direction.y)
+    }
+
+    if (this.position.y <= 0 || this.position.y >= height) {
+      this.direction = createVector(this.direction.x, -this.direction.y)
+    }
   }
 }
 
