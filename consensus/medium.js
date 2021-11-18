@@ -40,6 +40,7 @@ class Message {
   }
 
   moveTowardsTarget() {
+    // console.log(this.target)
     let vec = createVector(this.target.position.x, this.target.position.y)
     vec.sub(this.position)
     vec.normalize()
@@ -59,6 +60,8 @@ class Message {
     rectMode(CENTER)
     fill(this.color)
     noStroke()
+    // stroke(0)
+    // strokeWeight(2)
     rect(this.position.x, this.position.y, this.radius, this.radius)
   }
 

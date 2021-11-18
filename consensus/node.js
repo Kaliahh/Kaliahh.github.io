@@ -14,6 +14,8 @@ class Node {
     this.messageBuffer = []
 
     this.isRunning;
+
+    this.counter = 0;
   }
 
   async run() {
@@ -23,16 +25,16 @@ class Node {
     //   await sleep(100)
     // }
 
-    let next = randomRecepient;
+    let next = randomRecepient();
 
-    // if (this.index == 0) {
-    //   this.multicast(new MultiCastMessage(next.index))
-    // }
+    if (this.index == 0) {
+      this.multicast(next.index)
+    }
 
     // TODO: Hvis mit index er i beskeden, så er det mig der multicaster næste gang.
 
-    this.receive("a")
-    this.receive("a")
+    // this.receive("a")
+    // this.receive("a")
     
   }
 
@@ -40,15 +42,39 @@ class Node {
 
     for (let i = 0; i < nodeList.length; i++) {
       if (i != this.index) {
-        this.medium.send(this, nodeList[i], message.message)
+        this.medium.send(this, nodeList[i], message)
       }
     }
   } 
 
   async receive(message) {
-    let recepient = randomRecepient(this.index);
+    if (message.message == this.index && message.message != -1) {
+      this.counter += 1;
+      console.log(this.counter)
 
-    this.medium.send(this, recepient, Math.floor(random() * 100));
+      if (this.counter == nodeList.length - 1) {
+        let next = randomRecepient();
+
+        this.multicast(next.index);
+      }
+    }
+    else if (message.message == this.index && message.message == -1) {
+      console.log("First one")
+    }
+    else if (message.message != this.index && message.message == -1) {
+      console.log("Second one")
+    }
+    else if (message.message != this.index && message.message != -1) {
+      this.medium.send(this, nodeList[message.message], message.message);
+    }
+    else {
+      console.log("Last one")
+    }
+
+
+    // let recepient = randomRecepient(this.index);
+
+    // this.medium.send(this, recepient, Math.floor(random() * 100));
 
     // console.log(message.message)
   }
