@@ -18,7 +18,7 @@ class Node {
     this.counter = 0;
 
     this.direction = createVector();
-    this.speed = 1;
+    this.speed = 2;
   }
 
   async run() {

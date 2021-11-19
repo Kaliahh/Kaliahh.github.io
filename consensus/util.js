@@ -68,3 +68,27 @@ function arrangeInCircle(list) {
     list[i].position = vec
   }
 }
+
+function arrangeInSquare(list) {
+  let sideLength = Math.floor(list.length / 4);
+  let i;
+  let j;
+
+  let step = 10;
+
+  for (i = 0; i < 4; i++) {
+    for (j = sideLength * i; j < sideLength * (i + 1); j++) {
+      if (i % 2 == 0) {
+        let vec = createVector(j * step, i * sideLength)
+
+        list[j].position = vec
+      }
+      else {
+        let vec = createVector(i * sideLength, j * step)
+
+        list[j].position = vec
+      }
+    }
+  }
+
+}

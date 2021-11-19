@@ -7,6 +7,7 @@ async function setup() {
   nodeList = createNodes(width / 20, medium)
 
   // arrangeInCircle(nodeList);
+  // arrangeInSquare(nodeList);
 
   for (let i = 0; i < nodeList.length; i++) {
     nodeList[i].run();
