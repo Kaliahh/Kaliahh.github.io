@@ -37,15 +37,48 @@ class Message {
 
     this.radius = 10;
     this.color = source.color;
+
+    this.lerpFactor = 0.0;
+    this.lerpStep = 0.005;
+
+    this.lerpPointOne = createVector(random(-axisLength, axisLength), 
+                                     random(-axisLength, axisLength),
+                                     random(-axisLength, axisLength));
+
+    this.lerpPointTwo = createVector(random(-axisLength, axisLength), 
+                                     random(-axisLength, axisLength),
+                                     random(-axisLength, axisLength));
   }
 
   moveTowardsTarget() {
-    // console.log(this.target)
+    this.curvedMovement()
+    // this.linearAccMovement()
+    // this.linearConstMovement()
+  }
+
+  // Bézier Curve
+  curvedMovement() {
+    let a = p5.Vector.lerp(this.source.position, this.lerpPointOne, this.lerpFactor);
+    let b = p5.Vector.lerp(this.lerpPointOne, this.lerpPointTwo, this.lerpFactor);
+    let c = p5.Vector.lerp(this.lerpPointTwo, this.target.position, this.lerpFactor);
+
+    let d = p5.Vector.lerp(a, b, this.lerpFactor)
+    let e = p5.Vector.lerp(b, c, this.lerpFactor)
+
+    this.position = p5.Vector.lerp(d, e, this.lerpFactor);
+
+    this.lerpFactor += this.lerpStep 
+
+    if (this.lerpFactor >= 1) {
+      this.arrived = true;
+    }
+  }
+
+  linearAccMovement() {
     let vec = this.target.position.copy()
     vec.sub(this.position)
     let fullVec = vec.copy()
     
-
     if (fullVec.mag() / 100 < 2) {
       fullVec.normalize()
       fullVec.mult(2)
@@ -60,6 +93,16 @@ class Message {
     this.position.add(vec)
 
     if (distanceBetweenTwoPoints(this.position, this.target.position) <= 1) {
+      this.arrived = true;
+    }
+  }
+
+  linearConstMovement() {
+    this.position = p5.Vector.lerp(this.source.position, this.target.position, this.lerpFactor);
+
+    this.lerpFactor += this.lerpStep + random(-0.003, 0.003);
+
+    if (this.lerpFactor >= 1) {
       this.arrived = true;
     }
   }
@@ -88,8 +131,14 @@ class Message {
     this.color.setAlpha(30)
     stroke(this.color)
     strokeWeight(10)
+    noFill()
+    // drawLine(this.position, this.target.position)
 
-    drawLine(this.position, this.target.position)
+    bezier(this.source.position.x, this.source.position.y, this.source.position.z,
+      this.lerpPointOne.x, this.lerpPointOne.y, this.lerpPointOne.z,
+      this.lerpPointTwo.x, this.lerpPointTwo.y, this.lerpPointTwo.z,
+      this.target.position.x, this.target.position.y, this.target.position.z);
+
     this.color.setAlpha(255)
   }
 }

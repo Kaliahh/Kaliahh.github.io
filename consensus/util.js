@@ -79,16 +79,15 @@ function arrangeInSquare(list) {
   for (i = 0; i < 4; i++) {
     for (j = sideLength * i; j < sideLength * (i + 1); j++) {
       if (i % 2 == 0) {
-        let vec = createVector(j * step, i * sideLength)
+        let vec = createVector(j * step, i * sideLength * step)
 
         list[j].position = vec
       }
       else {
-        let vec = createVector(i * sideLength, j * step)
+        let vec = createVector(i * sideLength * step, j * step)
 
         list[j].position = vec
       }
     }
   }
-
 }

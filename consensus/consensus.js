@@ -6,6 +6,14 @@ async function setup() {
 
   nodeList = createNodes(width / 20, medium)
 
+  // node1 = new Node(medium, 0, width / 2 - 100, height / 2);
+  // node2 = new Node(medium, 1, width / 2 + 100, height / 2);
+
+  // nodeList = []
+
+  // nodeList.push(node1);
+  // nodeList.push(node2)
+
   // arrangeInCircle(nodeList);
   // arrangeInSquare(nodeList);
 

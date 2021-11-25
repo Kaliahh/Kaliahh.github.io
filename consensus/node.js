@@ -1,7 +1,11 @@
 class Node {
-  constructor(medium, index) {
-    let x = random(20, width - 20)
-    let y = random(20, height - 20)
+  constructor(medium, index, x, y) {
+
+    if (x == null || y == null) {
+      x = random(20, width - 20)
+      y = random(20, height - 20)
+    }
+    
     
 
     this.position = createVector(x, y)
@@ -22,7 +26,7 @@ class Node {
   }
 
   async run() {
-    let next = randomRecepient();
+    let next = randomRecepient(this.index);
 
     if (this.index == 0) {
       this.reliableMulticast(next.index)
@@ -34,16 +38,17 @@ class Node {
     for (let i = 0; i < nodeList.length; i++) {
       if (i != this.index) {
         this.medium.send(this, nodeList[i], message)
+        await sleep(1)
       }
     }
   } 
 
-  async receive(message) {
+  async receiveToMulticast(message) {
     if (message.message == this.index) {
       this.counter += 1;
 
       if (this.counter == nodeList.length - 1) {
-        let next = randomRecepient();
+        let next = randomRecepient(this.index);
 
         this.reliableMulticast(next.index);
 
@@ -53,6 +58,12 @@ class Node {
     else {
       this.medium.send(this, nodeList[message.message], message.message);
     }
+  }
+
+  async receiveToRandomSingle(message) {
+    let next = randomRecepient(this.index);
+
+    this.medium.send(this, next, message.message);
   }
 
   display() {
@@ -75,10 +86,6 @@ class Node {
     this.direction.normalize().mult(this.speed);
 
     this.position.add(this.direction);
-
-
-    // this.x += this.direction.x * this.speed;
-    // this.y += this.direction.y * this.speed;
 
     if (this.position.x <= 0 || this.position.x >= width) {
       this.direction = createVector(-this.direction.x, this.direction.y)
