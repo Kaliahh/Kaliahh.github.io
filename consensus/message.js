@@ -223,7 +223,58 @@ class Message {
     // https://stackoverflow.com/questions/54652588/how-to-draw-an-overlapping-curve-between-two-bezier-points-on-existing-curve-p5
     
     // TODO: Animate the path going from source to target when the message is sent, and again when the message has arrived. 
+
+
+
+    // Look at splitting the curve!
     if (this.isCurving) {
+
+      let t = this.lerpFactor;
+
+      // q0 = (1 - t) * P0 + t * P1
+      // q1 = (1 - t) * P1 + t * P2
+      // q2 = (1 - t) * P2 + t * P3
+
+      // r0 = (1 - t) * q0 + t * q1
+      // r1 = (1 - t) * q1 + t * q2
+
+      // s0 = (1 - t) * r0 + t * r1
+
+      // let q0 = p5.Vector.add(p5.Vector.mult(this.source.position, 1 - t), p5.Vector.mult(this.lerpPointOne, t)) 
+      // let q1 = p5.Vector.add(p5.Vector.mult(this.lerpPointOne, 1 - t),  p5.Vector.mult(this.lerpPointTwo, t))
+      // let q2 = p5.Vector.add(p5.Vector.mult(this.lerpPointOne, 1 - t), p5.Vector.mult(this.target.position, t))
+
+      // let r0 = p5.Vector.add(p5.Vector.mult(q0, 1 - t), p5.Vector.mult(q1, t) )
+      // let r1 = p5.Vector.add(p5.Vector.mult(q1, 1 - t), p5.Vector.mult(q2, t))
+
+      // let s0 = p5.Vector.add(p5.Vector.mult(r0, 1 - t), p5.Vector.mult(r1, t))
+
+
+      
+
+      
+
+
+      // p0, q0, r0, s0
+
+      // bezier(this.source.position.x, this.source.position.y,
+      //        q0.x, q0.y,
+      //        r0.x, r0.y,
+      //        s0.x, s0.y);
+
+
+      // s0, r1, q2, p3
+      // bezier(s0.x, s0.y,
+      //        r1.x, r1.y,
+      //        q2.x, q2.y,
+      //        this.target.position.x, this.target.position.y);
+
+
+      
+
+
+
+
       bezier(this.source.position.x, this.source.position.y,
              this.lerpPointOne.x, this.lerpPointOne.y, 
              this.lerpPointTwo.x, this.lerpPointTwo.y, 
