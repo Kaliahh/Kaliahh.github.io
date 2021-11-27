@@ -31,14 +31,32 @@ class Message {
 
   // Bézier Curve
   curvedMovement() {
-    let a = p5.Vector.lerp(this.source.position, this.lerpPointOne, this.lerpFactor);
-    let b = p5.Vector.lerp(this.lerpPointOne, this.lerpPointTwo, this.lerpFactor);
-    let c = p5.Vector.lerp(this.lerpPointTwo, this.target.position, this.lerpFactor);
+    // let a = p5.Vector.lerp(this.source.position, this.lerpPointOne, this.lerpFactor);
+    // let b = p5.Vector.lerp(this.lerpPointOne, this.lerpPointTwo, this.lerpFactor);
+    // let c = p5.Vector.lerp(this.lerpPointTwo, this.target.position, this.lerpFactor);
 
-    let d = p5.Vector.lerp(a, b, this.lerpFactor)
-    let e = p5.Vector.lerp(b, c, this.lerpFactor)
+    // let d = p5.Vector.lerp(a, b, this.lerpFactor)
+    // let e = p5.Vector.lerp(b, c, this.lerpFactor)
 
-    this.position = p5.Vector.lerp(d, e, this.lerpFactor);
+    // this.position = p5.Vector.lerp(d, e, this.lerpFactor);
+
+
+    let t = this.lerpFactor;
+
+    let a =      Math.pow(-t, 3) + 3 * Math.pow(t, 2) - 3 * t + 1;
+    let b =  3 * Math.pow(t,  3) - 6 * Math.pow(t, 2) + 3 * t;
+    let c = -3 * Math.pow(t,  3) + 3 * Math.pow(t, 2);
+    let d =      Math.pow(t,  3);
+    
+    let v1 = p5.Vector.mult(this.source.position, a);
+    let v2 = p5.Vector.mult(this.lerpPointOne, b);
+    let v3 = p5.Vector.mult(this.lerpPointTwo, c);
+    let v4 = p5.Vector.mult(this.target.position, d);
+
+    this.position = v1.add(v2).add(v3).add(v4);
+
+
+    
 
     this.lerpFactor += this.lerpStep 
 
@@ -151,12 +169,47 @@ class Message {
     // this.target.receiveToRandomSingle(this);
   }
 
-  // TODO: This should be an arrowhead or something
   display() {
     rectMode(CENTER)
     fill(this.color)
     noStroke()
-    rect(this.position.x, this.position.y, this.radius, this.radius)
+    
+    let vec = this.getDerived();
+
+    let rotation = vec.heading();
+
+    push();
+
+    translate(this.position);
+    rotate(rotation + (PI /2));
+
+    triangle(0, -this.radius / 2, this.radius / 2, this.radius / 2, -this.radius / 2, this.radius / 2)
+    // rect(0, 0, this.radius, this.radius)
+
+    pop();
+  }
+
+  getDerived() {
+
+    let t = this.lerpFactor;
+
+    let a = -3 * Math.pow(t, 2) + 6 * t - 3;
+    let b = 9 * Math.pow(t, 2) - 12 * t + 3;
+    let c = -9 * Math.pow(t, 2) + 6 * t;
+    let d = 3 * Math.pow(t, 2);
+
+    let v1 = p5.Vector.mult(this.source.position, a);
+    let v2 = p5.Vector.mult(this.lerpPointOne, b);
+    let v3 = p5.Vector.mult(this.lerpPointTwo, c);
+    let v4 = p5.Vector.mult(this.target.position, d);
+
+    let vec = v1.add(v2).add(v3).add(v4);
+
+    vec.normalize();
+
+    return vec;
+
+
   }
 
   displayPath() {
@@ -168,6 +221,8 @@ class Message {
     // TODO: This should only display the part of the curve that is left
     // Maybe this can do it:
     // https://stackoverflow.com/questions/54652588/how-to-draw-an-overlapping-curve-between-two-bezier-points-on-existing-curve-p5
+    
+    // TODO: Animate the path going from source to target when the message is sent, and again when the message has arrived. 
     if (this.isCurving) {
       bezier(this.source.position.x, this.source.position.y,
              this.lerpPointOne.x, this.lerpPointOne.y, 
