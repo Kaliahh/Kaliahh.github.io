@@ -18,6 +18,10 @@ class Message {
     this.lerpPointTwo = this.findControlPoint()
 
     this.isCurving = false;
+
+    this.preview = 0;
+    this.previewStep = 0.03;
+    this.closing = 0;
   }
 
   moveTowardsTarget() {
@@ -190,7 +194,6 @@ class Message {
   }
 
   getDerived() {
-
     let t = this.lerpFactor;
 
     let a = -3 * Math.pow(t, 2) + 6 * t - 3;
@@ -208,9 +211,10 @@ class Message {
     vec.normalize();
 
     return vec;
-
-
   }
+
+  // Calculate constant speed 
+      // https://gamedev.stackexchange.com/questions/14985/determine-arc-length-of-a-catmull-rom-spline-to-move-at-a-constant-speed/14995#14995
 
   displayPath() {
     noFill()
@@ -218,72 +222,129 @@ class Message {
     stroke(this.color)
     strokeWeight(10)
 
-    // TODO: This should only display the part of the curve that is left
-    // Maybe this can do it:
-    // https://stackoverflow.com/questions/54652588/how-to-draw-an-overlapping-curve-between-two-bezier-points-on-existing-curve-p5
-    
-    // TODO: Animate the path going from source to target when the message is sent, and again when the message has arrived. 
+    if (this.preview < 1) {
+      this.drawBezierBetween(this.lerpFactor, this.preview);
 
-
-
-    // Look at splitting the curve!
-    if (this.isCurving) {
-
-      let t = this.lerpFactor;
-
-      // q0 = (1 - t) * P0 + t * P1
-      // q1 = (1 - t) * P1 + t * P2
-      // q2 = (1 - t) * P2 + t * P3
-
-      // r0 = (1 - t) * q0 + t * q1
-      // r1 = (1 - t) * q1 + t * q2
-
-      // s0 = (1 - t) * r0 + t * r1
-
-      // let q0 = p5.Vector.add(p5.Vector.mult(this.source.position, 1 - t), p5.Vector.mult(this.lerpPointOne, t)) 
-      // let q1 = p5.Vector.add(p5.Vector.mult(this.lerpPointOne, 1 - t),  p5.Vector.mult(this.lerpPointTwo, t))
-      // let q2 = p5.Vector.add(p5.Vector.mult(this.lerpPointOne, 1 - t), p5.Vector.mult(this.target.position, t))
-
-      // let r0 = p5.Vector.add(p5.Vector.mult(q0, 1 - t), p5.Vector.mult(q1, t) )
-      // let r1 = p5.Vector.add(p5.Vector.mult(q1, 1 - t), p5.Vector.mult(q2, t))
-
-      // let s0 = p5.Vector.add(p5.Vector.mult(r0, 1 - t), p5.Vector.mult(r1, t))
-
-
-      
-
-      
-
-
-      // p0, q0, r0, s0
-
-      // bezier(this.source.position.x, this.source.position.y,
-      //        q0.x, q0.y,
-      //        r0.x, r0.y,
-      //        s0.x, s0.y);
-
-
-      // s0, r1, q2, p3
-      // bezier(s0.x, s0.y,
-      //        r1.x, r1.y,
-      //        q2.x, q2.y,
-      //        this.target.position.x, this.target.position.y);
-
-
-      
-
-
-
-
-      bezier(this.source.position.x, this.source.position.y,
-             this.lerpPointOne.x, this.lerpPointOne.y, 
-             this.lerpPointTwo.x, this.lerpPointTwo.y, 
-             this.target.position.x, this.target.position.y);
+      this.preview += this.previewStep
     }
     else {
-      line(this.position.x, this.position.y, this.target.position.x, this.target.position.y)
+      this.drawBezierBetween(this.lerpFactor, 1);
     }
+
+    // TODO: Animate closing path
+
+    // if (this.preview < 1) {
+    //   this.drawBezierBetween(0, this.preview);
+      
+    //   this.preview += this.previewStep;
+    // }
+    // else {
+    //   let a = (1 - this.lerpFactor) / this.lerpStep;
+    //   let b = (1 - this.lerpFactor) / this.previewStep;
+
+    //   if (a <= b) {
+    //     this.drawBezierBetween(this.closing, 1);
+
+    //     if (this.closing < 1) {
+    //       this.closing += this.previewStep
+    //     }
+    //   }
+    //   else {
+    //     this.drawBezierBetween(0, 1);
+    //   }
+    // }
+
+
+    // else if (this.lerpFactor < 0.87) {
+    //   this.drawBezierBetween(0, 1);
+    // }
+    // else {
+    //   this.drawBezierBetween(this.closing, 1);
+      
+    //   if (this.closing < 1) {
+    //     this.closing += 0.04;
+    //   }
+    // }
+
+    // line(this.position.x, this.position.y, this.target.position.x, this.target.position.y)
     
     this.color.setAlpha(255)
+  }
+
+  drawBezierFrom(t) {
+    let split = this.splitBezierAt(t);
+
+    drawBezier(split.from[0], split.from[1], split.from[2], split.from[3]);
+  }
+
+  drawBezierTo(t) {
+    let split = this.splitBezierAt(t) 
+
+    drawBezier(split.to[0], split.to[1], split.to[2], split.to[3]);
+  }
+
+  splitBezierAt(t) {
+    let p1 = this.source.position.copy();
+    let p2 = this.lerpPointOne.copy();
+    let p3 = this.lerpPointTwo.copy();
+    let p4 = this.target.position.copy();
+
+    let a1 = p5.Vector.sub(p2, p1).mult(t).add(p1);
+    let a2 = p5.Vector.sub(p3, p2).mult(t).add(p2);
+    let a3 = p5.Vector.sub(p4, p3).mult(t).add(p3);
+
+    let q1 = p5.Vector.sub(a2, a1).mult(t).add(a1);
+    let q2 = p5.Vector.sub(a3, a2).mult(t).add(a2);
+
+    let s0 = p5.Vector.sub(q2, q1).mult(t).add(q1);
+
+    return {
+      to: [p1, a1, q1, s0],
+      from: [s0, q2, a3, p4]
+    }
+  }
+
+  // Problem: Draw to preview leaves a bit between the message and source.
+  // Solution: Only draw bezier curve between this.lerpFactor and this.preview
+  // Look at this: https://stackoverflow.com/questions/878862/drawing-part-of-a-b%C3%A9zier-curve-by-reusing-a-basic-b%C3%A9zier-curve-function
+  drawBezierBetween(t0, t1) {
+    let u0 = 1.0 - t0;
+    let u1 = 1.0 - t1;
+
+    let p1 = this.source.position.copy();
+    let p2 = this.lerpPointOne.copy();
+    let p3 = this.lerpPointTwo.copy();
+    let p4 = this.target.position.copy();
+
+    let ra1 = p5.Vector.mult(p1, u0 * u0)
+    let ra2 = p5.Vector.mult(p2, 2 * t0 * u0)
+    let ra3 = p5.Vector.mult(p3, t0 * t0);
+
+    let qa = ra1.add(ra2).add(ra3);
+
+    let rb1 = p5.Vector.mult(p1, u1 * u1);
+    let rb2 = p5.Vector.mult(p2, 2 * t1 * u1);
+    let rb3 = p5.Vector.mult(p3, t1 * t1);
+
+    let qb = rb1.add(rb2).add(rb3);
+
+    let rc1 = p5.Vector.mult(p2, u0 * u0);
+    let rc2 = p5.Vector.mult(p3, 2 * t0 * u0);
+    let rc3 = p5.Vector.mult(p4, t0 * t0);
+
+    let qc = rc1.add(rc2).add(rc3);    
+
+    let rd1 = p5.Vector.mult(p2, u1 * u1);
+    let rd2 = p5.Vector.mult(p3, 2 * t1 * u1);
+    let rd3 = p5.Vector.mult(p4, t1 * t1);
+
+    let qd = rd1.add(rd2).add(rd3);    
+
+    let s0 = p5.Vector.mult(qa, u0).add(p5.Vector.mult(qc, t0));
+    let s1 = p5.Vector.mult(qa, u1).add(p5.Vector.mult(qc, t1));
+    let s2 = p5.Vector.mult(qb, u0).add(p5.Vector.mult(qd, t0));
+    let s3 = p5.Vector.mult(qb, u1).add(p5.Vector.mult(qd, t1));
+
+    drawBezier(s0, s1, s2, s3);
   }
 }
