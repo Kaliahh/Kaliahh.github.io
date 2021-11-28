@@ -7,14 +7,6 @@ async function setup() {
   nodeList = createNodes(width / 20, medium)
   // nodeList = createNodes(2, medium);
 
-  // node1 = new Node(medium, 0, width / 2 - 100, height / 2);
-  // node2 = new Node(medium, 1, width / 2 + 100, height / 2);
-
-  // nodeList = []
-
-  // nodeList.push(node1);
-  // nodeList.push(node2)
-
   // arrangeInCircle(nodeList);
   // arrangeInSquare(nodeList);
 
@@ -31,9 +23,8 @@ async function setup() {
 
 
 
-function draw() {
+async function draw() {
   background(51) 
-
 
   for (let i = 0; i < nodeList.length; i++) {
     // nodeList[i].move();
@@ -44,5 +35,7 @@ function draw() {
     medium.messageList[i].displayPath();
     medium.messageList[i].display(); 
   }
+
+  await sleep(100);
 }
 

@@ -21,7 +21,9 @@ class Message {
 
     this.preview = 0;
     this.previewStep = 0.03;
+
     this.closing = 0;
+    this.closingStep = 0.01;
   }
 
   moveTowardsTarget() {
@@ -35,33 +37,29 @@ class Message {
 
   // Bézier Curve
   curvedMovement() {
-    // let a = p5.Vector.lerp(this.source.position, this.lerpPointOne, this.lerpFactor);
-    // let b = p5.Vector.lerp(this.lerpPointOne, this.lerpPointTwo, this.lerpFactor);
-    // let c = p5.Vector.lerp(this.lerpPointTwo, this.target.position, this.lerpFactor);
+    let a = p5.Vector.lerp(this.source.position, this.lerpPointOne, this.lerpFactor);
+    let b = p5.Vector.lerp(this.lerpPointOne, this.lerpPointTwo, this.lerpFactor);
+    let c = p5.Vector.lerp(this.lerpPointTwo, this.target.position, this.lerpFactor);
 
-    // let d = p5.Vector.lerp(a, b, this.lerpFactor)
-    // let e = p5.Vector.lerp(b, c, this.lerpFactor)
+    let d = p5.Vector.lerp(a, b, this.lerpFactor)
+    let e = p5.Vector.lerp(b, c, this.lerpFactor)
 
-    // this.position = p5.Vector.lerp(d, e, this.lerpFactor);
+    this.position = p5.Vector.lerp(d, e, this.lerpFactor);
 
+    if (this.preview < 1) {
+      this.preview += this.previewStep;
+    }
+    else {
+      let a = (1 - this.lerpFactor) / this.lerpStep;
+      let b = 1 / this.closingStep;
 
-    let t = this.lerpFactor;
-
-    let a =      Math.pow(-t, 3) + 3 * Math.pow(t, 2) - 3 * t + 1;
-    let b =  3 * Math.pow(t,  3) - 6 * Math.pow(t, 2) + 3 * t;
-    let c = -3 * Math.pow(t,  3) + 3 * Math.pow(t, 2);
-    let d =      Math.pow(t,  3);
+      if (a - b <= 0) {
+        if (this.closing < 1) {
+          this.closing += this.closingStep;
+        }
+      }
+    }
     
-    let v1 = p5.Vector.mult(this.source.position, a);
-    let v2 = p5.Vector.mult(this.lerpPointOne, b);
-    let v3 = p5.Vector.mult(this.lerpPointTwo, c);
-    let v4 = p5.Vector.mult(this.target.position, d);
-
-    this.position = v1.add(v2).add(v3).add(v4);
-
-
-    
-
     this.lerpFactor += this.lerpStep 
 
     if (this.lerpFactor >= 1) {
@@ -214,7 +212,7 @@ class Message {
   }
 
   // Calculate constant speed 
-      // https://gamedev.stackexchange.com/questions/14985/determine-arc-length-of-a-catmull-rom-spline-to-move-at-a-constant-speed/14995#14995
+  // https://gamedev.stackexchange.com/questions/14985/determine-arc-length-of-a-catmull-rom-spline-to-move-at-a-constant-speed/14995#14995
 
   displayPath() {
     noFill()
@@ -223,48 +221,16 @@ class Message {
     strokeWeight(10)
 
     if (this.preview < 1) {
-      this.drawBezierBetween(this.lerpFactor, this.preview);
-
-      this.preview += this.previewStep
+      this.drawBezierBetween(0, this.preview);
     }
     else {
-      this.drawBezierBetween(this.lerpFactor, 1);
+      if (this.closing > 0) {
+        this.drawBezierBetween(this.closing, 1);
+      }
+      else {
+        this.drawBezierBetween(0, 1);
+      }
     }
-
-    // TODO: Animate closing path
-
-    // if (this.preview < 1) {
-    //   this.drawBezierBetween(0, this.preview);
-      
-    //   this.preview += this.previewStep;
-    // }
-    // else {
-    //   let a = (1 - this.lerpFactor) / this.lerpStep;
-    //   let b = (1 - this.lerpFactor) / this.previewStep;
-
-    //   if (a <= b) {
-    //     this.drawBezierBetween(this.closing, 1);
-
-    //     if (this.closing < 1) {
-    //       this.closing += this.previewStep
-    //     }
-    //   }
-    //   else {
-    //     this.drawBezierBetween(0, 1);
-    //   }
-    // }
-
-
-    // else if (this.lerpFactor < 0.87) {
-    //   this.drawBezierBetween(0, 1);
-    // }
-    // else {
-    //   this.drawBezierBetween(this.closing, 1);
-      
-    //   if (this.closing < 1) {
-    //     this.closing += 0.04;
-    //   }
-    // }
 
     // line(this.position.x, this.position.y, this.target.position.x, this.target.position.y)
     
