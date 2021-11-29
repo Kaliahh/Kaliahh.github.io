@@ -20,7 +20,7 @@ class Message {
     this.isCurving = false;
 
     this.preview = 0;
-    this.previewStep = 0.03;
+    this.previewStep = 0.01;
 
     this.closing = 0;
     this.closingStep = 0.01;
