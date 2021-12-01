@@ -37,18 +37,22 @@ function createNodes(n, medium) {
   for (i = 0; i < n; i++) {
     list.push(new Node(medium, i))
   }
+
+  for (i = 0; i < n; i++) {
+    list[i].setNeighborhood(list);
+  }
   
   return list
 }
 
-function randomRecepient(myIndex) {
+function randomRecepient(myIndex, recepients) {
   let index;
   let recepient;
 
   do {
-    index = getRandomInt(0, nodeList.length);
+    index = getRandomInt(0, recepients.length);
     if (index != myIndex) {
-      recepient = nodeList[index];
+      recepient = recepients[index];
     }
   } while (index == myIndex)
 

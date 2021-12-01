@@ -6,7 +6,7 @@ class Node {
       y = random(20, height - 20)
     }
     
-    
+    this.neighborhood = [];
 
     this.position = createVector(x, y)
     this.medium = medium;
@@ -26,18 +26,22 @@ class Node {
   }
 
   async run() {
-    let next = randomRecepient(this.index);
+    let next = randomRecepient(this.index, this.neighborhood);
 
     if (this.index == 0) {
-      this.reliableMulticast(next.index)
+      this.reliableMulticast(next.index, this.neighborhood)
     }   
+
+    // if (this.index % 5 == 0) {
+    //   this.medium.send(this, next, "");
+    // }
   }
 
-  async reliableMulticast(message) {
+  async reliableMulticast(message, recepients) {
 
-    for (let i = 0; i < nodeList.length; i++) {
+    for (let i = 0; i < recepients.length; i++) {
       if (i != this.index) {
-        this.medium.send(this, nodeList[i], message)
+        this.medium.send(this, recepients[i], message)
         await sleep(1)
       }
     }
@@ -47,23 +51,31 @@ class Node {
     if (message.message == this.index) {
       this.counter += 1;
 
-      if (this.counter == nodeList.length - 1) {
-        let next = randomRecepient(this.index);
+      if (this.counter == this.neighborhood.length - 1) {
+        let next = randomRecepient(this.index, this.neighborhood);
 
-        this.reliableMulticast(next.index);
+        this.reliableMulticast(next.index, this.neighborhood);
 
         this.counter = 0;
       }
     }
     else {
-      this.medium.send(this, nodeList[message.message], message.message);
+      this.medium.send(this, this.neighborhood[message.message], message.message);
     }
   }
 
   async receiveToRandomSingle(message) {
-    let next = randomRecepient(this.index);
+    let next = randomRecepient(this.index, this.neighborhood);
 
     this.medium.send(this, next, message.message);
+  }
+
+  async receiveToRandomNeighbor(message) {
+
+  }
+
+  setNeighborhood(neighborhood) {
+    this.neighborhood = neighborhood;
   }
 
   display() {

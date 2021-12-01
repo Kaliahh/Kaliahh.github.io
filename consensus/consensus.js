@@ -21,8 +21,6 @@ async function setup() {
   }
 }
 
-
-
 async function draw() {
   background(51) 
 
@@ -38,4 +36,3 @@ async function draw() {
 
   await sleep(100);
 }
-

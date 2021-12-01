@@ -20,10 +20,10 @@ class Message {
     this.isCurving = false;
 
     this.preview = 0;
-    this.previewStep = 0.01;
+    this.previewStep = 0.02;
 
     this.closing = 0;
-    this.closingStep = 0.01;
+    this.closingStep = 0.02;
   }
 
   moveTowardsTarget() {
@@ -37,6 +37,10 @@ class Message {
 
   // Bézier Curve
   curvedMovement() {
+    if (this.lerpFactor >= 1) {
+      this.arrived = true;
+    }
+
     let a = p5.Vector.lerp(this.source.position, this.lerpPointOne, this.lerpFactor);
     let b = p5.Vector.lerp(this.lerpPointOne, this.lerpPointTwo, this.lerpFactor);
     let c = p5.Vector.lerp(this.lerpPointTwo, this.target.position, this.lerpFactor);
@@ -61,10 +65,6 @@ class Message {
     }
     
     this.lerpFactor += this.lerpStep 
-
-    if (this.lerpFactor >= 1) {
-      this.arrived = true;
-    }
   }
 
   // Old non-lerp movement
@@ -113,57 +113,17 @@ class Message {
     let b = (random() <= 0.5) ? createVector(a.y, -a.x) 
                               : createVector(-a.y, a.x);
     
-    b.normalize()
-     .mult(random(0, p5.Vector.dist(source, target))) // Divide to get a bit less curvature
-     .add(a);
+    do {
+      b.normalize()
+      .mult(random(0, p5.Vector.dist(source, target))) // Divide to get a bit less curvature
+      .add(a);
+    } while (!this.isWithinBoundary(b))
 
-    return this.enforceBoundaryMin(b);
+    return b;
   }
 
-  enforceBoundary(vec) {
-    let v = vec.copy()
-    if (v.x < 0) {
-      v.x = 0;
-    }
-    else if (v.x > width) {
-      v.x = width;
-    }
-
-    if (v.y < 0) {
-      v.y = 0;
-    }
-    else if (v.y > height) {
-      v.y = height;
-    }
-    return v;
-  }
-
-  enforceBoundaryMax(vec) {
-    let v = vec.copy()
-
-    if (v.x < 0 || v.x > width) {
-      v.x = width;
-    }
-
-    if (v.y < 0 || v.y > height) {
-      v.y = height;
-    }
-    
-    return v;
-  }
-
-  enforceBoundaryMin(vec) {
-    let v = vec.copy()
-
-    if (v.x < 0 || v.x > width) {
-      v.x = 0;
-    }
-
-    if (v.y < 0 || v.y > height) {
-      v.y = 0;
-    }
-    
-    return v;
+  isWithinBoundary(vec) {
+    return vec.x > 0 && vec.x < width && vec.y > 0 && vec.y < height;
   }
 
   arrive() {
@@ -220,21 +180,32 @@ class Message {
     stroke(this.color)
     strokeWeight(10)
 
+
+    // this.drawBezierBetween(this.closing, this.preview);
+
     if (this.preview < 1) {
-      this.drawBezierBetween(0, this.preview);
+      // this.drawBezierBetween(0, this.preview);
+      this.drawBezierTo(this.preview);
     }
     else {
       if (this.closing > 0) {
-        this.drawBezierBetween(this.closing, 1);
+        // this.drawBezierBetween(this.closing, 1);
+        this.drawBezierFrom(this.closing);
       }
       else {
-        this.drawBezierBetween(0, 1);
+        // this.drawBezierBetween(this.closing, this.preview);
+        // this.drawBezierTo(1);
+        this.drawMyBezier();
       }
     }
 
     // line(this.position.x, this.position.y, this.target.position.x, this.target.position.y)
     
     this.color.setAlpha(255)
+  }
+
+  drawMyBezier() {
+    drawBezier(this.source.position, this.lerpPointOne, this.lerpPointTwo, this.target.position);
   }
 
   drawBezierFrom(t) {
