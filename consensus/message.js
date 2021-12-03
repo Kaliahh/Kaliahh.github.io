@@ -4,7 +4,7 @@ class Message {
     this.target = target;
     this.message = message;
 
-    this.position = createVector(source.position.x, source.position.y);
+    this.position = source.position.copy()
 
     this.arrived = false
 
