@@ -22,7 +22,7 @@ class Message {
     if (this.connection.connected == false) {
       this.connection.connect()
     }
-    else if (this.connection.connectionEnded == false) {
+    else if (this.connection.disconnected == false) {
       this.connection.disconnect()
     }
     else {

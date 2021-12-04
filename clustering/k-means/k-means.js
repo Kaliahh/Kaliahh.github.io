@@ -86,6 +86,7 @@ function updateCentroids(points, centroids) {
     }
   }
   
+  // TODO: Use lerping for something here, to make the movement less janky
   for (j = 0; j < centroids.length; j++) {
     if (positionList[j] != undefined) {
       let x = positionList[j].x / pointsPerCentroid[j];

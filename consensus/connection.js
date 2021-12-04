@@ -8,15 +8,18 @@ class Connection {
     this.beginning = 0.0
     this.end = 0.0;
 
-    this.lerpFactor = 0.0;
-    this.someLerpStep = 0.005;
+    this.timer = 0.0;
+    this.timerStep = this.lerpStep / 4;
 
     this.connected = false;
-    this.connectionEnded = false;
+    this.disconnected = false;
+
+    this.connecting = true;
+    this.disconnecting = false;
 
     this.color = source.color;
 
-    this.strength = 0.5
+    this.strength = 1
   }
 
 
@@ -26,23 +29,24 @@ class Connection {
     if (this.end < 1) {
       this.drawConnectionTo(this.end)
     }
+    else if (this.beginning > 0) {
+      this.drawConnectionFrom(this.beginning)
+    }
     else {
-      if (this.beginning > 0) {
-        this.drawConnectionFrom(this.beginning)
-      }
-      else {
-        this.drawConnection();
-      }
+      this.drawConnection();
     }
 
     this.postDraw()
   }
 
   connect() {
-    this.lerpFactor += this.someLerpStep;
+    this.timer += this.timerStep;
+
+    this.connecting = true;
 
     if (this.end >= 1) {
       this.connected = true;
+      this.connecting = false;
     }
     else {
       this.end += this.lerpStep;
@@ -52,13 +56,16 @@ class Connection {
   }
 
   disconnect() {
-    this.lerpFactor += this.someLerpStep;
+    this.timer += this.timerStep;
+
+    this.disconnecting = true;
     
     if (this.beginning >= 1) {
-      this.connectionEnded = true;
+      this.disconnected = true;
+      this.disconnecting = false;
     }
     else {
-      let a = (1 - this.lerpFactor) / this.someLerpStep;
+      let a = (1 - this.timer) / this.timerStep;
       let b = 1 / this.lerpStep;
 
       if (a - b <= 0) {
@@ -68,7 +75,7 @@ class Connection {
       }
     }
 
-    return this.connectionEnded;
+    return this.disconnected;
   }
 
   preDraw() {
@@ -76,7 +83,7 @@ class Connection {
     let alpha = map(this.strength, 0, 1, 20, 100);
     this.color.setAlpha(alpha);
     stroke(this.color);
-    let weight = map(this.strength, 0, 1, 3, 10);
+    let weight = map(this.strength, 0, 1, 4, 10);
     strokeWeight(weight);
   }
 
