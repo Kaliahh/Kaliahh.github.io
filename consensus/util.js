@@ -30,7 +30,7 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-
+// TODO: This should be done in some grid system, to guarantee a certain distance between nodes
 function createNodes(n, medium) {
   list = []
   
