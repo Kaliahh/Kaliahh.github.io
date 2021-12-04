@@ -14,25 +14,21 @@ class Message {
     this.lerpFactor = 0.0;
     this.lerpStep = 0.005;
 
-    this.lerpPointOne = this.findControlPoint()
-    this.lerpPointTwo = this.findControlPoint()
-
-    this.isCurving = false;
-
-    this.preview = 0;
-    this.previewStep = 0.02;
-
-    this.closing = 0;
-    this.closingStep = 0.02;
+    this.connection = new CurvedConnection(source, target);
   }
 
   moveTowardsTarget() {
 
-    this.isCurving = true;
-
-    this.curvedMovement()
-    // this.linearAccMovement()
-    // this.linearConstMovement()
+    if (this.connection.connected == false) {
+      this.connection.connect()
+    }
+    else if (this.connection.connectionEnded == false) {
+      this.connection.disconnect()
+    }
+    else {
+      
+      this.arrived = true;
+    }
   }
 
   // Bézier Curve
@@ -50,20 +46,6 @@ class Message {
 
     this.position = p5.Vector.lerp(d, e, this.lerpFactor);
 
-    if (this.preview < 1) {
-      this.preview += this.previewStep;
-    }
-    else {
-      let a = (1 - this.lerpFactor) / this.lerpStep;
-      let b = 1 / this.closingStep;
-
-      if (a - b <= 0) {
-        if (this.closing < 1) {
-          this.closing += this.closingStep;
-        }
-      }
-    }
-    
     this.lerpFactor += this.lerpStep 
   }
 
@@ -95,37 +77,13 @@ class Message {
   linearConstMovement() {
     this.position = p5.Vector.lerp(this.source.position, this.target.position, this.lerpFactor);
 
-    this.lerpFactor += this.lerpStep // + random(-0.003, 0.003);
+    this.lerpFactor += this.lerpStep 
 
     if (this.lerpFactor >= 1) {
       this.arrived = true;
     }
   }
-
-  findControlPoint() {
-    let source = this.source.position
-    let target = this.target.position
-
-    let a = p5.Vector.lerp(source, target, random());
-    
-    // Choose true if you want a fountain
-    // Choose false if you want sort of grass or roots
-    let b = (random() <= 0.5) ? createVector(a.y, -a.x) 
-                              : createVector(-a.y, a.x);
-    
-    do {
-      b.normalize()
-      .mult(random(0, p5.Vector.dist(source, target))) // Divide to get a bit less curvature
-      .add(a);
-    } while (!this.isWithinBoundary(b))
-
-    return b;
-  }
-
-  isWithinBoundary(vec) {
-    return vec.x > 0 && vec.x < width && vec.y > 0 && vec.y < height;
-  }
-
+  
   arrive() {
     this.target.receiveToMulticast(this);
     // this.target.receiveToRandomSingle(this);
@@ -174,114 +132,8 @@ class Message {
   // Calculate constant speed 
   // https://gamedev.stackexchange.com/questions/14985/determine-arc-length-of-a-catmull-rom-spline-to-move-at-a-constant-speed/14995#14995
 
-  displayPath() {
-    noFill()
-    this.color.setAlpha(30)
-    stroke(this.color)
-    strokeWeight(10)
-
-
-    // this.drawBezierBetween(this.closing, this.preview);
-
-    if (this.preview < 1) {
-      // this.drawBezierBetween(0, this.preview);
-      this.drawBezierTo(this.preview);
-    }
-    else {
-      if (this.closing > 0) {
-        // this.drawBezierBetween(this.closing, 1);
-        this.drawBezierFrom(this.closing);
-      }
-      else {
-        // this.drawBezierBetween(this.closing, this.preview);
-        // this.drawBezierTo(1);
-        this.drawMyBezier();
-      }
-    }
-
-    // line(this.position.x, this.position.y, this.target.position.x, this.target.position.y)
-    
-    this.color.setAlpha(255)
+  displayConnection() {
+    this.connection.display();
   }
 
-  drawMyBezier() {
-    drawBezier(this.source.position, this.lerpPointOne, this.lerpPointTwo, this.target.position);
-  }
-
-  drawBezierFrom(t) {
-    let split = this.splitBezierAt(t);
-
-    drawBezier(split.from[0], split.from[1], split.from[2], split.from[3]);
-  }
-
-  drawBezierTo(t) {
-    let split = this.splitBezierAt(t) 
-
-    drawBezier(split.to[0], split.to[1], split.to[2], split.to[3]);
-  }
-
-  splitBezierAt(t) {
-    let p1 = this.source.position.copy();
-    let p2 = this.lerpPointOne.copy();
-    let p3 = this.lerpPointTwo.copy();
-    let p4 = this.target.position.copy();
-
-    let a1 = p5.Vector.sub(p2, p1).mult(t).add(p1);
-    let a2 = p5.Vector.sub(p3, p2).mult(t).add(p2);
-    let a3 = p5.Vector.sub(p4, p3).mult(t).add(p3);
-
-    let q1 = p5.Vector.sub(a2, a1).mult(t).add(a1);
-    let q2 = p5.Vector.sub(a3, a2).mult(t).add(a2);
-
-    let s0 = p5.Vector.sub(q2, q1).mult(t).add(q1);
-
-    return {
-      to: [p1, a1, q1, s0],
-      from: [s0, q2, a3, p4]
-    }
-  }
-
-  // Problem: Draw to preview leaves a bit between the message and source.
-  // Solution: Only draw bezier curve between this.lerpFactor and this.preview
-  // Look at this: https://stackoverflow.com/questions/878862/drawing-part-of-a-b%C3%A9zier-curve-by-reusing-a-basic-b%C3%A9zier-curve-function
-  drawBezierBetween(t0, t1) {
-    let u0 = 1.0 - t0;
-    let u1 = 1.0 - t1;
-
-    let p1 = this.source.position.copy();
-    let p2 = this.lerpPointOne.copy();
-    let p3 = this.lerpPointTwo.copy();
-    let p4 = this.target.position.copy();
-
-    let ra1 = p5.Vector.mult(p1, u0 * u0)
-    let ra2 = p5.Vector.mult(p2, 2 * t0 * u0)
-    let ra3 = p5.Vector.mult(p3, t0 * t0);
-
-    let qa = ra1.add(ra2).add(ra3);
-
-    let rb1 = p5.Vector.mult(p1, u1 * u1);
-    let rb2 = p5.Vector.mult(p2, 2 * t1 * u1);
-    let rb3 = p5.Vector.mult(p3, t1 * t1);
-
-    let qb = rb1.add(rb2).add(rb3);
-
-    let rc1 = p5.Vector.mult(p2, u0 * u0);
-    let rc2 = p5.Vector.mult(p3, 2 * t0 * u0);
-    let rc3 = p5.Vector.mult(p4, t0 * t0);
-
-    let qc = rc1.add(rc2).add(rc3);    
-
-    let rd1 = p5.Vector.mult(p2, u1 * u1);
-    let rd2 = p5.Vector.mult(p3, 2 * t1 * u1);
-    let rd3 = p5.Vector.mult(p4, t1 * t1);
-
-    let qd = rd1.add(rd2).add(rd3);    
-
-    let s0 = p5.Vector.mult(qa, u0).add(p5.Vector.mult(qc, t0));
-    let s1 = p5.Vector.mult(qa, u1).add(p5.Vector.mult(qc, t1));
-    let s2 = p5.Vector.mult(qb, u0).add(p5.Vector.mult(qd, t0));
-    let s3 = p5.Vector.mult(qb, u1).add(p5.Vector.mult(qd, t1));
-
-    drawBezier(s0, s1, s2, s3);
-  }
 }

@@ -30,7 +30,7 @@ async function draw() {
   }
 
   for (let i = 0; i < medium.messageList.length; i++) {
-    medium.messageList[i].displayPath();
+    medium.messageList[i].displayConnection();
     // medium.messageList[i].display(); 
   }
 
