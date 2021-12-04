@@ -26,7 +26,8 @@ class Connection {
   display() {
     this.preDraw()
 
-    if (this.end < 1) {
+  
+    if (this.connecting) {
       this.drawConnectionTo(this.end)
     }
     else if (this.beginning > 0) {
@@ -97,6 +98,20 @@ class Connection {
     }
     else {
       this.strength += value;
+    }
+  }
+
+  transmit(message, recepient) {
+    if (this.connected) {
+      if (recepient == this.source || recepient == this.target) {
+        recepient.receive(message);
+      }
+      else {
+        console.log("Recepient not in connection")
+      }
+    }
+    else {
+      console.log("Not connected")
     }
   }
 }
