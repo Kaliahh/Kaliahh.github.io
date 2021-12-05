@@ -4,6 +4,19 @@ class Medium {
   }
 
   async send(source, target, message) {
+    if (source == undefined) {
+      console.log("Source undefined")
+    }
+    else if (source == null) {
+      console.log("Source null")
+    }
+    if (target == undefined) {
+      console.log("Target undefined")
+    }
+    else if (target == null) {
+      console.log("Target null")
+    }
+
     this.messageList.push(new Message(source, target, message))
   }
 

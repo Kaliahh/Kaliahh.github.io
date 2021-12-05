@@ -34,18 +34,18 @@ function randomRecepient(myIndex, recepients) {
   let index;
   let recepient;
 
-  if (recepients.length == 0) {
+  if (recepients.length < 2) {
     return null;
   }
 
-  do {
+  while (true) {
     index = getRandomInt(0, recepients.length);
-    if (index != myIndex) {
-      recepient = recepients[index];
-    }
-  } while (index == myIndex)
+    let recepient = recepients[index];
 
-  return recepient;
+    if (recepient.index != myIndex) {
+      return recepient;
+    }
+  } 
 }
 
 function arrangeInCircle(list) {

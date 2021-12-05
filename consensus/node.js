@@ -18,7 +18,7 @@ class Node {
     this.messageBuffer = []
 
     this.isRunning;
-
+ 
     this.counter = 0;
 
     this.direction = createVector();
@@ -26,17 +26,23 @@ class Node {
   }
 
   run() {
-    if (this.index == 0) {
-      let next = randomRecepient(this.index, this.neighborhood);
-      this.reliableMulticast(next.index, this.neighborhood)
-    }   
+    // if (this.index == 0) {
+    //   let next = randomRecepient(this.index, this.neighborhood);
+    //   if (!nullOrUndefined(next)) {
+    //     this.reliableMulticast(next.index, this.neighborhood)
+    //   }
+    // }   
 
-    // if (this.index % 5 == 0) {
-    //   this.medium.send(this, next, "");
-    // }
+    if (this.index % 2 == 0) {
+      let next = randomRecepient(this.index, this.neighborhood);
+      if (!nullOrUndefined(next)) {
+        this.medium.send(this, next, "");
+      }
+    }
   }
 
   async reliableMulticast(message, recepients) {
+    console.log(recepients)
 
     for (let i = 0; i < recepients.length; i++) {
       if (i != this.index) {
@@ -67,8 +73,10 @@ class Node {
 
   async receiveToRandomSingle(message) {
     let next = randomRecepient(this.index, this.neighborhood);
-
-    this.medium.send(this, next, message.message);
+    if (!nullOrUndefined(next)) {
+      await sleep(getRandomInt(100, 1000))
+      this.medium.send(this, next, message.message);
+    }
   }
 
   async receiveToRandomNeighbor(message) {
@@ -107,6 +115,18 @@ class Node {
     if (this.position.y <= 0 || this.position.y >= height) {
       this.direction = createVector(this.direction.x, -this.direction.y)
     }
+  }
+}
+
+
+class GridNode extends Node {
+  constructor(medium, index, positionX, positionY, x, y) {
+    super(medium, index, positionX, positionY)
+
+    this.x = x;
+    this.y = y;
+
+
   }
 }
 

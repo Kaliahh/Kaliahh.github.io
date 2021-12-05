@@ -14,7 +14,7 @@ class Message {
     this.lerpFactor = 0.0;
     this.lerpStep = 0.005;
 
-    this.connection = new CurvedConnection(source, target);
+    this.connection = new LinearConnection(source, target);
   }
 
   moveTowardsTarget() {
@@ -29,6 +29,8 @@ class Message {
       
       this.arrived = true;
     }
+
+    this.linearConstMovement()
   }
 
   // Bézier Curve
@@ -85,8 +87,8 @@ class Message {
   }
   
   arrive() {
-    this.target.receiveToMulticast(this);
-    // this.target.receiveToRandomSingle(this);
+    // this.target.receiveToMulticast(this);
+    this.target.receiveToRandomSingle(this);
   }
 
   display() {
@@ -94,19 +96,19 @@ class Message {
     fill(this.color)
     noStroke()
     
-    let vec = this.getDerived();
+    // let vec = this.getDerived();
 
-    let rotation = vec.heading();
+    // let rotation = vec.heading();
 
-    push();
+    // push();
 
-    translate(this.position);
-    rotate(rotation + (PI /2));
+    // translate(this.position);
+    // rotate(rotation + (PI /2));
 
-    triangle(0, -this.radius / 2, this.radius / 2, this.radius / 2, -this.radius / 2, this.radius / 2)
-    // rect(0, 0, this.radius, this.radius)
-
-    pop();
+    // triangle(0, -this.radius / 2, this.radius / 2, this.radius / 2, -this.radius / 2, this.radius / 2)
+    
+    // pop();
+    rect(this.position.x, this.position.y, this.radius, this.radius)
   }
 
   getDerived() {

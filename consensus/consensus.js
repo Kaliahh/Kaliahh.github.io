@@ -9,7 +9,7 @@ async function setup() {
   let n = floor(width / cellSize);
   let m = floor(height / cellSize);
 
-  nodeCount = width / 20
+  nodeCount = floor(width / 20)
   // nodeCount = floor((n * m) / 10)
 
   console.log(nodeCount)
@@ -41,11 +41,11 @@ function draw() {
   background(51) 
 
   grid.drawNodes()
-  grid.drawGrid()
+  // grid.drawGrid()
 
 
   for (let i = 0; i < medium.messageList.length; i++) {
     medium.messageList[i].displayConnection();
-    // medium.messageList[i].display(); 
+    medium.messageList[i].display(); 
   }
 }

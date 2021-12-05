@@ -13,21 +13,28 @@ class Grid {
     this.index = 0
 
     this.preferredCount = nodeCount
-
     this.count = 0;
+
+    this.boundary = 2;
+    this.maxNeighborDistance = 4;
   }
 
   setGridNeighborhood() {
     for (let i = 0; i < this.gridList.length; i++) {
-      this.gridList[i].setNeighborhood(this.gridList);
+      this.gridList[i].setNeighborhood(this.findNeighborhood(this.gridList[i].x, this.gridList[i].y));
+      // this.gridList[i].setNeighborhood(this.gridList)
     }
   }
 
   drawNodes() {
     for (let i = 0; i < this.gridList.length; i++) {
       this.gridList[i].display()
+      // this.drawBoundary(this.gridList[i].x, this.gridList[i].y)
+      this.drawNeighborhood(this.gridList[i].x, this.gridList[i].y)
     }
   }
+
+  
 
   drawGrid() {
     stroke(255, 50)
@@ -103,28 +110,98 @@ class Grid {
 
       let node = this.grid[x][y]
 
-      if (nullOrUndefined(node) && this.checkNeighbors(x, y)) {
-        this.grid[x][y] = new Node(medium, this.index, this.getX(x), this.getY(y))
+      if (nullOrUndefined(node) && this.checkBoundary(x, y)) {
+        this.grid[x][y] = new GridNode(medium, this.index, this.getX(x), this.getY(y), x, y)
         this.gridList[this.index] = this.grid[x][y];
         this.index += 1
       }
     }
   }
 
-  tryInsert(node, x, y) {
-    let temp = this.grid[x][y];
-
-    if (nullOrUndefined(temp) && this.checkNeighbors(x, y)) {
-      this.grid[x][y] = node
-      return true
-    }
-    
-    return false;
+  drawSquare(x, y) {
+    fill(255, 50);
+    rectMode(CENTER)
+    rect(x, y, cellSize, cellSize);
   }
 
-  // TODO: Implement this
-  checkNeighbors(x, y) {
+  checkBoundary(x, y) {
+    for (let i = x - this.boundary + 1; i < x + this.boundary; i++) {
+      if (i < 0 || i >= this.n) {
+        continue;
+      }
+
+      for (let j = y - this.boundary + 1; j < y + this.boundary; j++) {
+        if (j < 0 || j >= this.m) {
+          continue;
+        }
+
+        if (!nullOrUndefined(this.grid[i][j])) {
+          return false;
+        }
+      }
+    }
+
     return true;
+  }
+
+  drawBoundary(x, y) {
+    for (let i = x - this.boundary + 1; i < x + this.boundary; i++) {
+      if (i < 0 || i >= this.n) {
+        continue;
+      }
+
+      for (let j = y - this.boundary + 1; j < y + this.boundary; j++) {
+        if (j < 0 || j >= this.m) {
+          continue;
+        }
+
+        this.drawSquare(this.getX(i), this.getY(j));
+      }
+    }
+  }
+
+  findNeighborhood(x, y) {
+    let list = [];
+
+    for (let i = x - this.maxNeighborDistance + 1; i < x + this.maxNeighborDistance; i++) {
+      if (i < 0 || i >= this.n) {
+        continue;
+      }
+
+      for (let j = y - this.maxNeighborDistance + 1; j < y + this.maxNeighborDistance; j++) {
+        if (j < 0 || j >= this.m) {
+          continue;
+        }
+
+        if (!nullOrUndefined(this.grid[i][j])) {
+          list.push(this.grid[i][j])
+        }
+      }
+    }
+
+    return list
+  }
+
+  drawNeighborhood(x, y) {
+    for (let i = x - this.maxNeighborDistance + 1; i < x + this.maxNeighborDistance; i++) {
+      if (i < 0 || i >= this.n) {
+        continue;
+      }
+
+      for (let j = y - this.maxNeighborDistance + 1; j < y + this.maxNeighborDistance; j++) {
+        if (j < 0 || j >= this.m) {
+          continue;
+        }
+
+        // this.drawSquare(this.getX(i), this.getY(j));
+        if (this.grid[i][j] != null) {
+          stroke(255, 20)
+          strokeWeight(1)
+          line(this.getX(x), this.getY(y), this.getX(i), this.getY(j))
+        }
+        
+      }
+    }
   }
 
   getCount() {
