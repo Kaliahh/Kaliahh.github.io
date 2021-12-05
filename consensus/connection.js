@@ -19,7 +19,7 @@ class Connection {
 
     this.color = source.color;
 
-    this.strength = 1
+    this.strength = 0.5
   }
 
 

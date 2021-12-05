@@ -30,24 +30,13 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 }
 
-// TODO: This should be done in some grid system, to guarantee a certain distance between nodes
-function createNodes(n, medium) {
-  list = []
-  
-  for (i = 0; i < n; i++) {
-    list.push(new Node(medium, i))
-  }
-
-  for (i = 0; i < n; i++) {
-    list[i].setNeighborhood(list);
-  }
-  
-  return list
-}
-
 function randomRecepient(myIndex, recepients) {
   let index;
   let recepient;
+
+  if (recepients.length == 0) {
+    return null;
+  }
 
   do {
     index = getRandomInt(0, recepients.length);
@@ -73,29 +62,6 @@ function arrangeInCircle(list) {
   }
 }
 
-function arrangeInSquare(list) {
-  let sideLength = Math.floor(list.length / 4);
-  let i;
-  let j;
-
-  let step = 10;
-
-  for (i = 0; i < 4; i++) {
-    for (j = sideLength * i; j < sideLength * (i + 1); j++) {
-      if (i % 2 == 0) {
-        let vec = createVector(j * step, i * sideLength * step)
-
-        list[j].position = vec
-      }
-      else {
-        let vec = createVector(i * sideLength * step, j * step)
-
-        list[j].position = vec
-      }
-    }
-  }
-}
-
 
 function drawBezier(p1, p2, p3, p4) {
   bezier(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
@@ -103,4 +69,9 @@ function drawBezier(p1, p2, p3, p4) {
 
 function drawLine(p1, p2) {
   line(p1.x, p1.y, p2.x, p2.y);
+}
+
+
+function nullOrUndefined(val) {
+  return val == undefined || val == null
 }

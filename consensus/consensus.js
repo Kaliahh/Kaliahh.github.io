@@ -4,15 +4,31 @@ async function setup() {
 
   medium = new Medium();
 
-  nodeList = createNodes(width / 20, medium)
-  // nodeList = createNodes(2, medium);
+  cellSize = 50; // Cells should be 50x50
 
-  // arrangeInCircle(nodeList);
-  // arrangeInSquare(nodeList);
+  let n = floor(width / cellSize);
+  let m = floor(height / cellSize);
 
-  for (let i = 0; i < nodeList.length; i++) {
-    nodeList[i].run();
-  }
+  nodeCount = width / 20
+  // nodeCount = floor((n * m) / 10)
+
+  console.log(nodeCount)
+
+  grid = new Grid(n, m)
+
+  // grid.fillRow(0)
+  // grid.fillRow(m - 1)
+
+  // grid.fillColumn(0)
+  // grid.fillColumn(n - 1)
+
+  grid.randomFill()
+
+  // arrangeInCircle(grid.gridList)
+
+  grid.setGridNeighborhood()
+
+  grid.runAll()
 
   while (true) {
     await medium.update();
@@ -21,18 +37,15 @@ async function setup() {
   }
 }
 
-async function draw() {
+function draw() {
   background(51) 
 
-  for (let i = 0; i < nodeList.length; i++) {
-    // nodeList[i].move();
-    nodeList[i].display();
-  }
+  grid.drawNodes()
+  grid.drawGrid()
+
 
   for (let i = 0; i < medium.messageList.length; i++) {
     medium.messageList[i].displayConnection();
     // medium.messageList[i].display(); 
   }
-
-  await sleep(100);
 }

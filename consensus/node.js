@@ -25,10 +25,9 @@ class Node {
     this.speed = 2;
   }
 
-  async run() {
-    let next = randomRecepient(this.index, this.neighborhood);
-
+  run() {
     if (this.index == 0) {
+      let next = randomRecepient(this.index, this.neighborhood);
       this.reliableMulticast(next.index, this.neighborhood)
     }   
 
@@ -50,6 +49,8 @@ class Node {
   async receiveToMulticast(message) {
     if (message.message == this.index) {
       this.counter += 1;
+
+      // let k = grid.getAmount()
 
       if (this.counter == this.neighborhood.length - 1) {
         let next = randomRecepient(this.index, this.neighborhood);
