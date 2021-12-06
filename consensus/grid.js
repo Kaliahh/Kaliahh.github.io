@@ -21,7 +21,7 @@ class Grid {
 
   setGridNeighborhood() {
     for (let i = 0; i < this.gridList.length; i++) {
-      this.gridList[i].setNeighborhood(this.findNeighborhood(this.gridList[i].x, this.gridList[i].y));
+      this.findNeighborhood(this.gridList[i]);
       // this.gridList[i].setNeighborhood(this.gridList)
     }
   }
@@ -30,7 +30,7 @@ class Grid {
     for (let i = 0; i < this.gridList.length; i++) {
       this.gridList[i].display()
       // this.drawBoundary(this.gridList[i].x, this.gridList[i].y)
-      this.drawNeighborhood(this.gridList[i].x, this.gridList[i].y)
+      this.drawNeighborhood(this.gridList[i])
     }
   }
 
@@ -160,47 +160,45 @@ class Grid {
     }
   }
 
-  findNeighborhood(x, y) {
-    let list = [];
+  findNeighborhood(node) {
+    let sentinel = true;
+    let tempNeighborDistance = this.maxNeighborDistance;
 
-    for (let i = x - this.maxNeighborDistance + 1; i < x + this.maxNeighborDistance; i++) {
-      if (i < 0 || i >= this.n) {
-        continue;
-      }
+    let x = node.x
+    let y = node.y
 
-      for (let j = y - this.maxNeighborDistance + 1; j < y + this.maxNeighborDistance; j++) {
-        if (j < 0 || j >= this.m) {
+    while (sentinel) {
+      for (let i = x - tempNeighborDistance + 1; i < x + tempNeighborDistance; i++) {
+        if (i < 0 || i >= this.n) {
           continue;
         }
-
-        if (!nullOrUndefined(this.grid[i][j])) {
-          list.push(this.grid[i][j])
+  
+        for (let j = y - tempNeighborDistance + 1; j < y + tempNeighborDistance; j++) {
+          if (j < 0 || j >= this.m) {
+            continue;
+          }
+  
+          if (!nullOrUndefined(this.grid[i][j]) && this.grid[i][j].index != node.index) {
+            node.addToNeighborhood(this.grid[i][j])
+            this.grid[i][j].addToNeighborhood(node)
+          }
         }
+      }
+
+      if (node.neighborhood.length < 2) {
+        tempNeighborDistance += 1
+      }
+      else {
+        sentinel = false;
       }
     }
-
-    return list
   }
 
-  drawNeighborhood(x, y) {
-    for (let i = x - this.maxNeighborDistance + 1; i < x + this.maxNeighborDistance; i++) {
-      if (i < 0 || i >= this.n) {
-        continue;
-      }
-
-      for (let j = y - this.maxNeighborDistance + 1; j < y + this.maxNeighborDistance; j++) {
-        if (j < 0 || j >= this.m) {
-          continue;
-        }
-
-        // this.drawSquare(this.getX(i), this.getY(j));
-        if (this.grid[i][j] != null) {
-          stroke(255, 20)
-          strokeWeight(1)
-          line(this.getX(x), this.getY(y), this.getX(i), this.getY(j))
-        }
-        
-      }
+  drawNeighborhood(node) {
+    for (let i = 0; i < node.neighborhood.length; i++) {
+      stroke(255, 20)
+      strokeWeight(1)
+      drawLine(node.position, node.neighborhood[i].position)
     }
   }
 

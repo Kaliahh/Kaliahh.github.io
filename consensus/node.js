@@ -25,7 +25,7 @@ class Node {
     this.speed = 2;
   }
 
-  run() {
+  async run() {
     // if (this.index == 0) {
     //   let next = randomRecepient(this.index, this.neighborhood);
     //   if (!nullOrUndefined(next)) {
@@ -36,6 +36,7 @@ class Node {
     if (this.index % 2 == 0) {
       let next = randomRecepient(this.index, this.neighborhood);
       if (!nullOrUndefined(next)) {
+        await sleep(getRandomInt(100, 1000))
         this.medium.send(this, next, "");
       }
     }
@@ -85,6 +86,12 @@ class Node {
 
   setNeighborhood(neighborhood) {
     this.neighborhood = neighborhood;
+  }
+
+  addToNeighborhood(node) {
+    if (this.neighborhood.indexOf(node) == -1) {
+      this.neighborhood.push(node)
+    }
   }
 
   display() {

@@ -9,8 +9,8 @@ async function setup() {
   let n = floor(width / cellSize);
   let m = floor(height / cellSize);
 
-  nodeCount = floor(width / 20)
-  // nodeCount = floor((n * m) / 10)
+  // nodeCount = floor(width / 20)
+  nodeCount = floor((n * m) / 9)
 
   console.log(nodeCount)
 

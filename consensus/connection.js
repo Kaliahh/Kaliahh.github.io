@@ -101,10 +101,13 @@ class Connection {
     }
   }
 
-  transmit(message, recepient) {
+  transmit(source, message) {
     if (this.connected) {
-      if (recepient == this.source || recepient == this.target) {
-        recepient.receive(message);
+      if (source == this.source) {
+        this.target.receive(message);
+      }
+      else if (source == this.target) {
+        this.source.receive(message);
       }
       else {
         console.log("Recepient not in connection")
@@ -113,6 +116,14 @@ class Connection {
     else {
       console.log("Not connected")
     }
+  }
+
+  isInConnection(node) {
+    if (this.source == node || this.target == node) {
+      return true;
+    }
+
+    return false
   }
 }
 

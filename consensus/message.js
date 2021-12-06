@@ -77,7 +77,9 @@ class Message {
 
   // Linear lerp movement
   linearConstMovement() {
-    this.position = p5.Vector.lerp(this.source.position, this.target.position, this.lerpFactor);
+    // this.position = p5.Vector.lerp(this.source.position, this.target.position, this.lerpFactor);
+    let vec = p5.Vector.lerp(this.source.position, this.target.position, this.lerpFactor);
+    this.position = p5.Vector.lerp(vec, this.target.position, this.lerpFactor)
 
     this.lerpFactor += this.lerpStep 
 
