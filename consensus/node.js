@@ -73,7 +73,12 @@ class Node {
   }
 
   async receiveToRandomSingle(message) {
-    let next = randomRecepient(this.index, this.neighborhood);
+    let next;
+
+    do {
+      next = randomRecepient(this.index, this.neighborhood);
+    } while (next == message.source)
+
     if (!nullOrUndefined(next)) {
       await sleep(getRandomInt(100, 1000))
       this.medium.send(this, next, message.message);
@@ -133,8 +138,17 @@ class GridNode extends Node {
     this.x = x;
     this.y = y;
 
+    this.connections = []
 
   }
+
+  // async receive(message) {
+
+  // }
+
+  // async run() {
+
+  // }
 }
 
 
