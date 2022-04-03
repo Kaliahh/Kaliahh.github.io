@@ -13,6 +13,7 @@ let nextBtn = document.getElementById("nextBtn");
 let minorBtn = document.getElementById("minorBtn");
 let majorBtn = document.getElementById("majorBtn");
 let resetBtn = document.getElementById("resetBtn");
+let backBtn = document.getElementById("backBtn");
 
 let output = document.getElementById("output");
 
@@ -40,6 +41,7 @@ function generateFinishedChordsHTML() {
   return result;
 }
 
+hideElement(backBtn);
 hideElement(nextBtn);
 hideElement(output);
 hideElement(resetBtn);
@@ -61,8 +63,13 @@ resetBtn.addEventListener('click', event => {
   reset();
 })
 
+backBtn.addEventListener('click', event => {
+  reset();
+})
+
 function makeChoice(choice) {
   chosenChords = choice;
+  showElement(backBtn);
   showElement(nextBtn);
   showElement(output);
   // showElement(progressBorder);
@@ -121,6 +128,7 @@ function setPrevious() {
   if (previous != "") {
     let prev = document.getElementById(previous);
     prev.style.color = getGreen();
+    prev.style.textDecoration = "underline";
   }
 
   previous = chords[index - 1];
@@ -140,6 +148,7 @@ function reset() {
   progressBar.style.backgroundColor = "white";
   hideElement(finishedChords)
   hideElement(resetBtn)
+  hideElement(backBtn)
 }
 
 function getGreen() {
