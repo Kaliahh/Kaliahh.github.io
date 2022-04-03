@@ -18,6 +18,10 @@ let progressBorder = document.getElementById("progress-border");
 
 let grid = document.getElementById("buttonsContainer");
 
+let finishedChords = document.getElementById("finished-chords");
+
+finishedChords.innerHTML = "<p>Am</p> <p>Bbm</p> <p>Bm</p> <p>Cm</p> <p>C#m</p> <p>Dm</p> <p>D#m</p> <p>Em</p> <p>Fm</p> <p>F#m</p> <p>Gm</p> <p>G#m</p>";
+
 hideElement(nextBtn);
 hideElement(output);
 hideElement(progressBorder)
