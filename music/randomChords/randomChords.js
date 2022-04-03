@@ -66,7 +66,7 @@ function getChord() {
   }
 
   output.innerHTML = chords[index];
-  progressBar.style.width = p5.prototype.map(index, 0, chords.length - 1, 0, 100) + "%";
+  progressBar.style.width = p5.prototype.map(index +1, 0, chords.length, 0, 100) + "%";
   
   index++;
 
