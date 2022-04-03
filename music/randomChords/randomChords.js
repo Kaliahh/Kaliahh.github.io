@@ -12,13 +12,15 @@ let minorBtn = document.getElementById("minorBtn");
 let majorBtn = document.getElementById("majorBtn");
 
 let output = document.getElementById("output");
-let outIndex = document.getElementById("index");
+
+let progressBar = document.getElementById("progress");
+let progressBorder = document.getElementById("progress-border");
 
 let grid = document.getElementById("buttonsContainer");
 
 hideElement(nextBtn);
 hideElement(output);
-hideElement(outIndex);
+hideElement(progressBorder)
 
 nextBtn.addEventListener('click', event => {
   getChord();
@@ -36,7 +38,7 @@ function makeChoice(choice) {
   chosenChords = choice;
   showElement(nextBtn);
   showElement(output);
-  showElement(outIndex);
+  showElement(progressBorder);
   hideElement(minorBtn);
   hideElement(majorBtn);
   getChord();
@@ -64,11 +66,13 @@ function getChord() {
   }
 
   output.innerHTML = chords[index];
-  outIndex.innerHTML = (index + 1) + "/" + chords.length;
+  progressBar.style.width = p5.prototype.map(index, 0, chords.length - 1, 0, 100) + "%";
   
   index++;
+
   if (index == chords.length) {
     nextBtn.innerHTML = "Finish"
+    progressBar.style.backgroundColor = "rgba(60, 180, 75, 1)";
   }
   else if (index >= chords.length) {
     reset()
@@ -82,9 +86,11 @@ function reset() {
   chosenChords = -1;
   hideElement(nextBtn);
   hideElement(output);
-  hideElement(outIndex);
   showElement(minorBtn);
   showElement(majorBtn);
+  hideElement(progressBorder);
+  progressBar.style.backgroundColor = "white";
+  
   grid.style.gridTemplateColumns = "auto auto";
 }
 
