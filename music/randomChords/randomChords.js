@@ -16,11 +16,28 @@ let output = document.getElementById("output");
 let progressBar = document.getElementById("progress");
 let progressBorder = document.getElementById("progress-border");
 
-let grid = document.getElementById("buttonsContainer");
+// let grid = document.getElementById("buttonsContainer");
 
 let finishedChords = document.getElementById("finished-chords");
 
-finishedChords.innerHTML = "<p>Am</p> <p>Bbm</p> <p>Bm</p> <p>Cm</p> <p>C#m</p> <p>Dm</p> <p>D#m</p> <p>Em</p> <p>Fm</p> <p>F#m</p> <p>Gm</p> <p>G#m</p>";
+function generateFinishedChordsHTML() {
+  let chordsList = [];
+
+  if (chosenChords == 0) {
+    chordsList = minorChords;
+  }
+  else if (chosenChords == 1) {
+    chordsList = majorChords;
+  }
+
+  result = "";
+
+  for (let i = 0; i < chordsList.length; i++) {
+    result += '<p id="' + chordsList[i] + '">' + chordsList[i] + "</p>";
+  }
+
+  return result;
+}
 
 hideElement(nextBtn);
 hideElement(output);
@@ -45,8 +62,10 @@ function makeChoice(choice) {
   showElement(progressBorder);
   hideElement(minorBtn);
   hideElement(majorBtn);
+  showFlexElement(finishedChords);
+  finishedChords.innerHTML = generateFinishedChordsHTML();
   getChord();
-  grid.style.gridTemplateColumns = "auto";
+  // grid.style.gridTemplateColumns = "auto";
 }
 
 function hideElement(elem) {
@@ -57,30 +76,36 @@ function showElement(elem) {
   elem.style.display = "block";
 }
 
+function showFlexElement(elem) {
+  elem.style.display = "flex";
+}
+
 function getChord() {
   if (begin) {
     if (chosenChords == 0) {
-      chords = minorChords;
+      chords = [...minorChords];
     }
     else {
-      chords = majorChords;
+      chords = [...majorChords];
     }
     shuffleArray(chords);
     begin = false;
   }
 
-  output.innerHTML = chords[index];
-  progressBar.style.width = p5.prototype.map(index + 1, 0, chords.length, 0, 100) + "%";
-  
   index++;
 
   if (index == chords.length) {
     nextBtn.innerHTML = "Finish"
-    progressBar.style.backgroundColor = "rgba(60, 180, 75, 1)";
+    progressBar.style.backgroundColor = getGreen();
   }
-  else if (index >= chords.length) {
-    reset()
+  else if (index > chords.length) {
+    reset();
+    return;
   }
+
+  output.innerHTML = chords[index - 1];
+  progressBar.style.width = p5.prototype.map(index, 0, chords.length, 0, 100) + "%";
+  document.getElementById(chords[index - 1]).style.color = getGreen();
 }
 
 function reset() {
@@ -94,8 +119,11 @@ function reset() {
   showElement(majorBtn);
   hideElement(progressBorder);
   progressBar.style.backgroundColor = "white";
+  hideElement(finishedChords)
   
-  grid.style.gridTemplateColumns = "auto auto";
+  // grid.style.gridTemplateColumns = "auto auto";
 }
 
-
+function getGreen() {
+  return "rgba(60, 180, 75, 1)"
+}
