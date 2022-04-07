@@ -8,11 +8,13 @@
     <script defer src="randomChords.js"></script>
 
     <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="checkbox.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta charset="utf-8" />
   </head>
   <body>
     <div class="center">
+      <input type="checkbox" id="includeInversions" />
       <div id="buttonsContainer" class="flex-container">
         <button id="backBtn">Back</button>
         <button id="nextBtn">Next</button>
@@ -21,6 +23,7 @@
         <button id="resetBtn">Reset</button>
       </div>
       <div id="finished-chords" class="finishedChords"></div>
+      <h2 class="whiteText" id="inversion"></h2>
       <h1 class="whiteText" id="output"></h1>
       <div id="progress-border" class="border">
         <div id="progress" class="progress"></div>

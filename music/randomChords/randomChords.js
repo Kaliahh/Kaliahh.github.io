@@ -1,6 +1,10 @@
+// TODO: Include randomly choosing between Root, 1st, and 2nd inversions
+
 let minorChords = ["Am", "Bbm", "Bm", "Cm", "C#m", "Dm", "D#m", "Em", "Fm", "F#m", "Gm", "G#m"];
 let majorChords = ["A", "Bb", "B", "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#"];
+let inversions = ["Root", "1st", "2nd"];
 let chords = [];
+let outInversions = [""];
 
 let chosenChords = -1;
 let shuffle = true;
@@ -16,11 +20,14 @@ let resetBtn = document.getElementById("resetBtn");
 let backBtn = document.getElementById("backBtn");
 
 let output = document.getElementById("output");
+let inversion = document.getElementById("inversion");
 
 let progressBar = document.getElementById("progress");
 let progressBorder = document.getElementById("progress-border");
 
 let finishedChords = document.getElementById("finished-chords");
+
+let inversionsCheckbox = document.getElementById("includeInversions");
 
 function generateFinishedChordsHTML() {
   let chordsList = [];
@@ -43,6 +50,7 @@ function generateFinishedChordsHTML() {
 
 hideElement(backBtn);
 hideElement(nextBtn);
+hideElement(inversion);
 hideElement(output);
 hideElement(resetBtn);
 hideElement(progressBorder);
@@ -72,7 +80,11 @@ function makeChoice(choice) {
   showElement(backBtn);
   showElement(nextBtn);
   showElement(output);
+  if (inversionsCheckbox.checked) {
+    showElement(inversion);
+  }
   // showElement(progressBorder);
+  hideElement(inversionsCheckbox);
   hideElement(minorBtn);
   hideElement(majorBtn);
   showFlexElement(finishedChords);
@@ -104,6 +116,11 @@ function getChord() {
     begin = false;
   }
 
+  if (index % outInversions.length == 0) {
+    outInversions = [...inversions]
+    shuffleArray(outInversions);
+  }
+
   index++;
 
   if (index == chords.length) {
@@ -111,6 +128,7 @@ function getChord() {
   }
   else if (index > chords.length) {
     output.innerHTML = ".";
+    inversion.innerHTML = ".";
     progressBar.style.backgroundColor = getGreen();
     setPrevious()
     hideElement(nextBtn);
@@ -118,7 +136,8 @@ function getChord() {
     return;
   }
 
-  output.innerHTML = chords[index - 1];
+  output.innerHTML = chords[index % chords.length];
+  inversion.innerHTML = outInversions[index % outInversions.length];
   progressBar.style.width = p5.prototype.map(index, 0, chords.length, 0, 100) + "%";
 
   setPrevious()
@@ -131,7 +150,7 @@ function setPrevious() {
     prev.style.textDecoration = "underline";
   }
 
-  previous = chords[index - 1];
+  previous = chords[index % chords.length];
 }
 
 function reset() {
@@ -142,8 +161,10 @@ function reset() {
   chosenChords = -1;
   hideElement(nextBtn);
   hideElement(output);
+  hideElement(inversion);
   showElement(minorBtn);
   showElement(majorBtn);
+  showElement(inversionsCheckbox);
   hideElement(progressBorder);
   progressBar.style.backgroundColor = "white";
   hideElement(finishedChords)
