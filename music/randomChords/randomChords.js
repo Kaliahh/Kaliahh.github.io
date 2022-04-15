@@ -27,7 +27,11 @@ let progressBorder = document.getElementById("progress-border");
 
 let finishedChords = document.getElementById("finished-chords");
 
-let inversionsCheckbox = document.getElementById("includeInversions");
+let inversionsCheckbox = document.getElementById("inversions-checkbox");
+let inversionsContainer = document.getElementById("inversions-container");
+
+let notesFormCheckbox = document.getElementById("notes-form-checkbox");
+let notesFormContainer = document.getElementById("notes-form-container");
 
 function generateFinishedChordsHTML() {
   let chordsList = [];
@@ -84,7 +88,8 @@ function makeChoice(choice) {
     showElement(inversion);
   }
   // showElement(progressBorder);
-  hideElement(inversionsCheckbox);
+  hideElement(notesFormContainer);
+  hideElement(inversionsContainer);
   hideElement(minorBtn);
   hideElement(majorBtn);
   showFlexElement(finishedChords);
@@ -97,7 +102,7 @@ function hideElement(elem) {
 }
 
 function showElement(elem) {
-  elem.style.display = "initial";
+  elem.style.display = "block";
 }
 
 function showFlexElement(elem) {
@@ -164,7 +169,8 @@ function reset() {
   hideElement(inversion);
   showElement(minorBtn);
   showElement(majorBtn);
-  showElement(inversionsCheckbox);
+  showElement(notesFormContainer)
+  showElement(inversionsContainer);
   hideElement(progressBorder);
   progressBar.style.backgroundColor = "white";
   hideElement(finishedChords)
